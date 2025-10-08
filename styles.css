@@ -17,7 +17,19 @@
 /* Base */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth} /* smooth native */
-body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,#fff,#fff7fb);color:var(--text)}
+/*body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,#fff,#fff7fb);color:var(--text)}*/
+
+body {
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #ffe6f0 0%, #ffd6eb 50%, #fff0f6 100%);
+  min-height: 100vh;
+  color: #5a3d4a;
+}
+
+
+
+
 .container{max-width:var(--max-width);margin:0 auto;padding:0 18px}
 
 /* secciones: pantalla completa */
@@ -105,3 +117,44 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
 
 /* footer */
 footer{ text-align:center;color:var(--muted);padding:20px 0 }
+
+/* Ajustes para layout info (izquierda) + countdown (derecha) */
+.countdown-card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,250,253,0.96));
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(193,124,160,0.06);
+  border: 1px solid rgba(203,125,167,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+}
+
+/* Hacer que los números del countdown sean un poco más grandes en el layout lateral */
+#countdown .cd-unit .num{
+  font-size: 28px;
+  line-height: 1;
+}
+
+/* Separadores (:) más pequeños en vertical */
+#countdown .cd-sep{
+  margin: 0 8px;
+  font-size: 20px;
+  color: var(--muted);
+}
+
+/* En pantallas pequeñas apilar (info arriba, countdown abajo) y centrar */
+@media (max-width: 767.98px){
+  .countdown-card{ min-height: auto; padding: 18px; }
+  .col-md-5.order-1{ order: 2; } /* aseguramos que el contenido quede después si algo extraño */
+  .col-md-7.order-2{ order: 1; }
+  .party-icon-wrap{ margin-bottom:10px; }
+}
+
+/* Mejor separación entre icono y texto cuando el icono está visible (desktop) */
+.party-icon-wrap{ margin-right: 12px; display:inline-flex; align-items:center; justify-content:center; }
+
+/* Asegurar que la flechita no tape contenido en mobile */
+.scroll-flecha{ bottom: 14px; }

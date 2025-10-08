@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -7,25 +8,30 @@
   <meta name="description" content="Invitación digital - Cumple 1 año Delfina - Tema Jigglypuff Princesa">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
 
   <!-- Bootstrap (opcional) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Fancybox (lightbox) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.css" />
 
   <!-- Custom styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
   <!-- AUDIO TOGGLE -->
   <button id="audioToggle" class="audio-toggle" aria-pressed="false" title="Reproducir música">
     <img id="audioPlay" src="img/icono-musica_play.svg" alt="Play" />
-    <img id="audioPause" src="img/icono-musica_pausa.svg" alt="Pause" class="hidden"/>
+    <img id="audioPause" src="img/icono-musica_pausa.svg" alt="Pause" class="hidden" />
   </button>
-  <audio id="bgAudio" loop preload="auto"><source src="img/musica.mp3" type="audio/mp3"></audio>
+  <audio id="bgAudio" loop preload="auto">
+    <source src="img/musica.mp3" type="audio/mp3">
+  </audio>
 
   <!-- === SECCIÓN 1: PORTADA (foto grande + banner) === -->
   <section id="portada" class="seccion portada">
@@ -49,65 +55,79 @@
     <a class="scroll-flecha" href="#mensaje" aria-label="Ir a mensaje">
       <!-- SVG chevron down pastel -->
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" />
       </svg>
     </a>
   </section>
 
-  <!-- === SECCIÓN 2: MENSAJE + CUENTA REGRESIVA === -->
-  <section id="mensaje" class="seccion mensaje">
-    <div class="container text-center">
-      <h2 class="section-title">¡Te espero para festejar este gran momento de mi vida!</h2>
-
-      <div class="countdown-wrap mt-4">
-        <div id="countdown" class="d-flex justify-content-center align-items-center flex-wrap">
-          <div class="cd-unit"><div id="cd-days" class="num">--</div><div class="lbl">DÍAS</div></div>
-          <div class="cd-sep">:</div>
-          <div class="cd-unit"><div id="cd-hours" class="num">--</div><div class="lbl">HRS</div></div>
-          <div class="cd-sep">:</div>
-          <div class="cd-unit"><div id="cd-mins" class="num">--</div><div class="lbl">MIN</div></div>
-          <div class="cd-sep">:</div>
-          <div class="cd-unit"><div id="cd-secs" class="num">--</div><div class="lbl">SEG</div></div>
-        </div>
-      </div>
-    </div>
-
-    <a class="scroll-flecha" href="#info" aria-label="Ir a info">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-  </section>
-
-  <!-- === SECCIÓN 3: INFO DE LA FIESTA === -->
+  <!-- === SECCIÓN INFO DE LA FIESTA === -->
   <section id="info" class="seccion info">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-3 text-center mb-3 mb-md-0">
-          <div class="party-icon-wrap mx-auto">
-            <img id="partyIcon" src="img/icono-fiesta.svg" alt="Fiesta" class="party-icon" />
-          </div>
-        </div>
-        <div class="col-md-9">
-          <h3>FIESTA</h3>
-          <p id="fiestaText">
-            Sábado 23 de noviembre — 21:00 a 05:00 hs.<br/>
-            Salón Campo Norte — Ruta E53, Córdoba.
-          </p>
-          <div class="d-flex flex-wrap gap-2">
-            <a id="comoLlegar" class="btn btn-outline-pink" target="_blank" rel="noopener">CÓMO LLEGAR</a>
-            <button id="showMapBtn" class="btn btn-outline-pink">Ver en mapa</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
+        <!-- IZQUIERDA: Info de la fiesta -->
+        <div class="col-md-7 order-2 order-md-1">
+          <div class="d-flex align-items-start">
+            <div class="mr-3 d-none d-md-block">
+              <div class="party-icon-wrap">
+                <img id="partyIcon" src="assets/icono-fiesta.svg" alt="Fiesta" class="party-icon" />
+              </div>
+            </div>
+            <div>
+              <h3 class="mb-1">FIESTA</h3>
+              <p id="fiestaText" class="mb-3">
+                Sábado 23 de noviembre — 21:00 a 05:00 hs.<br />
+                Salón Campo Norte — Ruta E53, Córdoba.
+              </p>
+              <div class="d-flex flex-wrap gap-2">
+                <a id="comoLlegar" class="btn btn-outline-pink mr-2" target="_blank" rel="noopener">CÓMO LLEGAR</a>
+                <button id="showMapBtn" class="btn btn-outline-pink">Ver en mapa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DERECHA: Cuenta regresiva -->
+        <div class="col-md-5 order-1 order-md-2 mb-4 mb-md-0">
+          <div class="countdown-card p-3">
+            <p class="lead text-center mb-2">¡Te espero para festejar este gran momento de mi vida!</p>
+            <div id="countdown" class="d-flex justify-content-center align-items-center flex-wrap">
+              <div class="cd-unit">
+                <div id="cd-days" class="num">--</div>
+                <div class="lbl">DÍAS</div>
+              </div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit">
+                <div id="cd-hours" class="num">--</div>
+                <div class="lbl">HRS</div>
+              </div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit">
+                <div id="cd-mins" class="num">--</div>
+                <div class="lbl">MIN</div>
+              </div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit">
+                <div id="cd-secs" class="num">--</div>
+                <div class="lbl">SEG</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- .row -->
+    </div> <!-- .container -->
+
+    <!-- flechita hacia galería -->
     <a class="scroll-flecha" href="#galeria" aria-label="Ir a galería">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" />
       </svg>
     </a>
   </section>
+
 
   <!-- === SECCIÓN 4: GALERÍA === -->
   <section id="galeria" class="seccion galeria">
@@ -119,7 +139,8 @@
 
     <a class="scroll-flecha" href="#confirmar" aria-label="Ir a confirmar">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" />
       </svg>
     </a>
   </section>
@@ -131,13 +152,13 @@
       <p class="mb-3">Contanos si venís, cuántos adultos y peques, edades y si hay restricciones alimentarias.</p>
       <div class="d-flex justify-content-center gap-2">
         <button id="openFormBtn2" class="btn btn-pink btn-lg">Confirmar asistencia</button>
-        <a id="mailtoLink" class="btn btn-outline-pink" href="#">Confirmar por email</a>
       </div>
     </div>
 
     <a class="scroll-flecha" href="#gracias" aria-label="Ir a gracias">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" />
       </svg>
     </a>
   </section>
@@ -155,7 +176,8 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body p-0">
-          <button type="button" class="close p-2" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close p-2" data-dismiss="modal" aria-label="Cerrar"><span
+              aria-hidden="true">&times;</span></button>
           <iframe id="formIframe" src="" width="100%" height="640" frameborder="0" title="Formulario RSVP"></iframe>
         </div>
       </div>
@@ -168,4 +190,5 @@
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.umd.js"></script>
   <script src="app.js"></script>
 </body>
+
 </html>
