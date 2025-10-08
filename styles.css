@@ -1,160 +1,180 @@
-/* styles.css — Flechitas SVG pastel + estilo general */
-
-/* ---------- Variables ---------- */
-:root{
-  --pink-50:#fff4f8;
-  --accent1:#ffb6d5;
-  --accent2:#d8c0ee;
-  --rose-300:#ffb6d5;
-  --lilac:#d8c0ee;
-  --text:#3b2630;
-  --muted:#87646f;
-  --glass:rgba(255,255,255,0.88);
-  --shadow:0 18px 50px rgba(193,124,160,0.12);
-  --max-width:980px;
+/* ---------- VARIABLES ---------- */
+:root {
+  --pink: #ff69b4;
+  --pink-light: #ffc0e0;
+  --text-dark: #3b2630;
+  --text-muted: #87646f;
+  --bg-light: #fff4f8;
+  --font-title: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
 }
 
-/* Base */
-*{box-sizing:border-box}
-html{scroll-behavior:smooth} /* smooth native */
-/*body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,#fff,#fff7fb);color:var(--text)}*/
+/* ---------- RESET & BASE ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  margin: 0;
-  font-family: 'Quicksand', sans-serif;
-  background: linear-gradient(135deg, #ffe6f0 0%, #ffd6eb 50%, #fff0f6 100%);
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  background: var(--bg-light);
+  line-height: 1.5;
+}
+
+img {
+  max-width: 30%;
+  display: center;
+}
+
+/* ---------- SECCIONES ---------- */
+.seccion {
+  padding: 80px 0;
+  position: relative;
+}
+
+/* ---------- PORTADA ---------- */
+.portada {
+  background: url('img/fondo_estrellitas.png') center/cover no-repeat;
   min-height: 100vh;
-  color: #5a3d4a;
-}
-
-
-
-
-.container{max-width:var(--max-width);margin:0 auto;padding:0 18px}
-
-/* secciones: pantalla completa */
-.seccion{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;position:relative}
-
-/* portada */
-.portada{background: radial-gradient(900px 300px at 10% 15%, rgba(255,230,240,0.65), transparent 8%), radial-gradient(900px 300px at 90% 85%, rgba(245,240,255,0.6), transparent 8%); border-radius:0; overflow:hidden; box-shadow:var(--shadow)}
-.portada-media{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.9) saturate(1.02);transform:scale(1.02);pointer-events:none;z-index:0}
-.portada-inner{position:relative;z-index:2;text-align:center;padding:20px}
-.logo-portada{width:100px;margin-bottom:8px}
-#mainTitle{font-family:"Playfair Display",serif;font-size:34px;margin:6px 0;font-weight:700}
-
-/* foto Delfi */
-.delfi-wrap img{width:240px;height:240px;object-fit:cover;border-radius:20px;border:10px solid rgba(255,255,255,0.9);box-shadow:0 40px 110px rgba(193,124,160,0.16);transition:transform .35s ease}
-.delfi-wrap img:hover{transform:translateY(-6px)}
-
-/* banner */
-.banner-date{display:inline-flex;gap:12px;align-items:center;margin-top:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;padding:10px 14px;border-radius:999px;font-weight:800;box-shadow:0 14px 36px rgba(203,125,167,0.12)}
-
-/* mensajes y conteo */
-.section-title{font-family:"Playfair Display",serif;font-size:22px;margin:0}
-.countdown-wrap{margin-top:12px}
-#countdown{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
-.cd-unit{min-width:72px;text-align:center;padding:10px 14px;border-radius:10px;background:linear-gradient(180deg,#fff,#fff8fb);box-shadow:0 8px 20px rgba(58,30,46,0.06)}
-.num{font-size:22px;font-weight:900}
-.lbl{font-size:11px;color:var(--muted);margin-top:6px}
-.cd-sep{font-size:22px;font-weight:800;color:var(--muted)}
-
-/* info fiesta */
-.info{background:var(--bg-soft)}
-.party-icon-wrap{width:140px;height:140px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#fff9fb);box-shadow:0 18px 50px rgba(203,125,167,0.06)}
-.party-icon{width:84px;height:84px;animation:party-move 3000ms cubic-bezier(.22,.9,.3,1) infinite}
-@keyframes party-move{0%{transform:translateY(0)}25%{transform:translateY(-12px)}50%{transform:translateY(0)}75%{transform:translateY(-8px)}100%{transform:translateY(0)}}
-
-/* galería */
-.galeria .section-title{margin-bottom:4px}
-#galleryWrap{margin-top:10px}
-.thumb img{width:100%;border-radius:12px;object-fit:cover;box-shadow:0 12px 30px rgba(58,30,46,0.06)}
-
-/* confirmar */
-.confirmar{background:linear-gradient(180deg,#fff,#fff9fb)}
-
-/* botones */
-.btn{border-radius:999px;font-weight:700;padding:10px 16px;display:inline-flex;align-items:center;gap:8px}
-.btn-pink{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;border:0;box-shadow:0 12px 36px rgba(203,125,167,0.12)}
-.btn-outline-pink{background:transparent;color:var(--text);border:1px solid rgba(203,125,167,0.12);}
-
-/* audio toggle */
-.audio-toggle{position:fixed;right:18px;bottom:18px;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:12000;background:linear-gradient(180deg,#fff,#fff8fb);box-shadow:0 18px 48px rgba(193,124,160,0.12)}
-.audio-toggle img{width:36px;height:36px}
-.hidden{display:none}
-
-/* ---------------- Flechita (estética pastel) ---------------- */
-.scroll-flecha{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:56px;height:56px;
-  border-radius:999px;
-  background: linear-gradient(180deg,#fff,#fff8fb);
-  box-shadow: 0 12px 30px rgba(193,124,160,0.08);
-  text-decoration:none;
-  z-index:12001;
-  transition: transform .18s ease, box-shadow .18s ease;
-  cursor:pointer;
-}
-.scroll-flecha:hover{ transform: translateX(-50%) translateY(-6px); box-shadow:0 20px 44px rgba(193,124,160,0.14); }
-.scroll-flecha svg polyline{ filter: drop-shadow(0 4px 8px rgba(255,186,209,0.15)); }
-@media (max-width:420px){ .scroll-flecha{ width:48px;height:48px; } }
-
-/* responsive */
-@media (max-width:880px){
-  .delfi-wrap img{ width:200px;height:200px }
-  .party-icon-wrap{ width:110px;height:110px }
-}
-@media (max-width:420px){
-  .delfi-wrap img{ width:160px;height:160px }
-  #countdown{gap:8px}
-  .portada-inner{ padding: 12px }
-}
-
-/* footer */
-footer{ text-align:center;color:var(--muted);padding:20px 0 }
-
-/* Ajustes para layout info (izquierda) + countdown (derecha) */
-.countdown-card{
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,250,253,0.96));
-  border-radius: 14px;
-  box-shadow: 0 12px 36px rgba(193,124,160,0.06);
-  border: 1px solid rgba(203,125,167,0.06);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  min-height: 200px;
+  position: relative;
+  text-align: center;
 }
 
-/* Hacer que los números del countdown sean un poco más grandes en el layout lateral */
-#countdown .cd-unit .num{
-  font-size: 28px;
-  line-height: 1;
+.portada-inner h1 {
+  font-family: var(--font-title);
+  font-size: 3rem;
+  color: var(--pink);
+  margin-top: 20px;
 }
 
-/* Separadores (:) más pequeños en vertical */
-#countdown .cd-sep{
-  margin: 0 8px;
-  font-size: 20px;
-  color: var(--muted);
+.delfi-wrap {
+  margin-top: 20px;
 }
 
-/* En pantallas pequeñas apilar (info arriba, countdown abajo) y centrar */
-@media (max-width: 767.98px){
-  .countdown-card{ min-height: auto; padding: 18px; }
-  .col-md-5.order-1{ order: 2; } /* aseguramos que el contenido quede después si algo extraño */
-  .col-md-7.order-2{ order: 1; }
-  .party-icon-wrap{ margin-bottom:10px; }
+.banner-date {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
 }
 
-/* Mejor separación entre icono y texto cuando el icono está visible (desktop) */
-.party-icon-wrap{ margin-right: 12px; display:inline-flex; align-items:center; justify-content:center; }
+.scroll-flecha {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: bounce 1.5s infinite;
+}
 
-/* Asegurar que la flechita no tape contenido en mobile */
-.scroll-flecha{ bottom: 14px; }
+@keyframes bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 10px); }
+}
+
+/* ---------- AUDIO BUTTON ---------- */
+.audio-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--pink-light);
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.audio-toggle img {
+  width: 24px;
+  height: 24px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* ---------- INFO & COUNTDOWN ---------- */
+.countdown-card {
+  background: #fff0f5;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+.cd-unit {
+  display: inline-block;
+  margin: 0 5px;
+  text-align: center;
+}
+
+.cd-unit .num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--pink);
+}
+
+.cd-unit .lbl {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.cd-sep {
+  font-size: 2rem;
+  color: var(--pink);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ---------- BOTONES ---------- */
+.btn-pink {
+  background-color: var(--pink);
+  color: #fff;
+  border-radius: 32px;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-pink:hover {
+  background-color: #ff85c1;
+}
+
+.btn-outline-pink {
+  border: 2px solid var(--pink);
+  color: var(--pink);
+  border-radius: 32px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background: transparent;
+}
+
+.btn-outline-pink:hover {
+  background-color: var(--pink);
+  color: #fff;
+}
+
+/* ---------- GALERÍA ---------- */
+.galeria #galleryWrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+/* ---------- GRACIAS ---------- */
+.gracias {
+  padding: 60px 0;
+  background: var(--bg-light);
+  text-align: center;
+}
