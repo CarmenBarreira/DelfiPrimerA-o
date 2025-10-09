@@ -65,7 +65,7 @@ const openFormBtn2 = document.getElementById('openFormBtn2');
 const formIframe = document.getElementById('formIframe');
 
 openFormBtn2.addEventListener('click', () => {
-  formIframe.src = 'https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXX/viewform?embedded=true';
+  formIframe.src = 'https://forms.gle/hQMGUH8XvTB2cBKa9';
   $('#formModal').modal('show');
 });
 
