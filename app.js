@@ -66,22 +66,42 @@ document.addEventListener('DOMContentLoaded', () => {
     console.info('Confirm buttons configured to use mailto fallback');
   }
 
-  // gallery (assets images)
+  // gallery (assets images) -> crear carousel + thumbs + fancybox
   const galleryImgs = [
-    'assets/1.jpg', 'assets/2.jpg', 'assets/3.jpg', 'assets/4.jpg',
-    'assets/5.jpg', 'assets/6.jpg', 'assets/7.jpg', 'assets/8.jpg'
+    'assets/1.jpg', 'assets/2.png', 'assets/3.png', 'assets/4.png',
+    'assets/5.jpeg', 'assets/6.jpeg', 'assets/7.jpeg', 'assets/8.jpeg'
   ];
-  const galleryWrap = document.getElementById('galleryWrap');
-  if (galleryWrap) {
-    galleryWrap.innerHTML = '';
-    galleryImgs.forEach(src => {
+  const carouselInner = document.getElementById('carouselInner');
+  const galleryThumbs = document.getElementById('galleryThumbs');
+
+  if (carouselInner && galleryThumbs) {
+    carouselInner.innerHTML = '';
+    galleryThumbs.innerHTML = '';
+
+    galleryImgs.forEach((src, i) => {
+      // slide
+      const active = i === 0 ? ' active' : '';
+      const slide = document.createElement('div');
+      slide.className = `carousel-item${active}`;
+      slide.innerHTML = `
+        <a data-fancybox="gallery" href="${src}">
+          <img src="${src}" class="d-block w-100" alt="Foto ${i+1}">
+        </a>
+      `;
+      carouselInner.appendChild(slide);
+
+      // thumb
       const col = document.createElement('div');
-      col.className = 'col-6 col-md-3 thumb';
-      col.innerHTML = `<a data-fancybox="gallery" href="${src}"><img src="${src}" alt="" class="img-fluid rounded"/></a>`;
-      galleryWrap.appendChild(col);
+      col.className = 'col-4 col-sm-3 col-md-2 thumb mb-2';
+      col.innerHTML = `<a data-fancybox="gallery" href="${src}"><img src="${src}" alt="Mini ${i+1}" /></a>`;
+      galleryThumbs.appendChild(col);
     });
-    console.info('Galería cargada con', galleryImgs.length, 'imágenes');
+
+    console.info('Carrusel y miniaturas cargadas con', galleryImgs.length, 'imágenes');
+    // inicializar el carousel (bootstrap)
+    try { $('#galleryCarousel').carousel(); } catch (e) { /* si jQuery/Bootstrap no disponibles */ }
   }
+
 
   // countdown
   startCountdown(EVENT_DATE_ISO);
