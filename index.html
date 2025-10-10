@@ -11,13 +11,10 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;600;700&display=swap"
     rel="stylesheet">
-
   <!-- Bootstrap (opcional) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
   <!-- Fancybox (lightbox) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.css" />
-
   <!-- Custom styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -38,8 +35,7 @@
     <div class="portada-media" aria-hidden="true"></div>
 
     <div class="portada-inner container text-center">
-      <img class="logo-portada" src="assets/logo1.png" alt="Logo de la invitación" />
-      <h1 id="mainTitle">Cumple 1 año • <span id="kidName">Delfina</span></h1>
+      <h1 id="mainTitle">Mi primer añito</h1>
 
       <div class="delfi-wrap mx-auto" role="img" aria-label="Foto de Delfina">
         <img id="delfiPhoto" src="assets/delfi.png" alt="Delfina" />
@@ -67,6 +63,7 @@
 
       <div class="row align-items-center mt-4">
         <!-- Info Fiesta -->
+        <!-- Info Fiesta (REEMPLAZAR) -->
         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
           <div class="party-icon-wrap mx-auto mb-3 mb-md-0">
             <img id="partyIcon" src="assets/icono-fiesta.svg" alt="Fiesta" class="party-icon" />
@@ -76,11 +73,19 @@
             📅 Sábado 06 de diciembre — 18:00 a 22:00 hs.<br />
             📍 Salón Aventurina — Av. Millán 3724
           </p>
-          <div class="d-flex flex-wrap gap-2">
+
+          <!-- Mensaje tierno -->
+          <p class="text-muted small">
+            Hace un año aterrizaba en los brazos de mis papis a cambiarles el mundo para siempre. Este primer añito lo celebramos con amor, música, juegos y un montón de besos. 💖
+          </p>
+
+          <!-- Botón centrado -->
+          <div class="d-flex justify-content-center justify-content-md-start mt-2">
             <a id="comoLlegar" href="https://maps.app.goo.gl/8hMPPE5CuvhBQKms6" class="btn btn-outline-pink"
               target="_blank" rel="noopener">CÓMO LLEGAR</a>
           </div>
         </div>
+
 
         <!-- Countdown -->
         <div class="col-md-6">
@@ -123,9 +128,34 @@
   <!-- === SECCIÓN 4: GALERÍA === -->
   <section id="galeria" class="seccion galeria" aria-labelledby="galTitle">
     <div class="container">
-      <h3 id="galTitle" class="section-title text-center mb-2">Galería — Mi primer añito</h3>
+      <h3 id="galTitle" class="section-title text-center mb-2">Galería — <span class="highlight-title">Mi primer
+          añito</span></h3>
       <p class="text-center text-muted mb-4">Pequeños momentos, grandes recuerdos ♥</p>
-      <div class="row" id="galleryWrap" role="list"></div>
+
+      <!-- Mensaje tierno / mini-cuento -->
+      <div class="text-center mb-3">
+        <p class="lead small text-muted">Aquí algunas fotos de este primer añito: risas, descubrimientos y mimos infinitos.</p>
+      </div>
+
+      <!-- Carrusel Bootstrap -->
+      <div id="galleryCarousel" class="carousel slide mb-3" data-ride="carousel" data-interval="4000">
+        <div class="carousel-inner" id="carouselInner">
+        </div>
+
+        <!-- controles -->
+        <a class="carousel-control-prev" href="#galleryCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Anterior</span>
+        </a>
+        <a class="carousel-control-next" href="#galleryCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Siguiente</span>
+        </a>
+      </div>
+
+      <!-- miniaturas (clic -> fancybox) -->
+      <div class="row justify-content-center" id="galleryThumbs" role="list">
+      </div>
     </div>
 
     <a class="scroll-flecha" href="#confirmar" aria-label="Ir a confirmar">
@@ -135,6 +165,7 @@
       </svg>
     </a>
   </section>
+
 
   <!-- === SECCIÓN 5: CONFIRMAR ASISTENCIA === -->
   <section id="confirmar" class="seccion confirmar" aria-labelledby="confirmTitle">
@@ -159,6 +190,7 @@
     <div class="container text-center">
       <h3 id="thanksTitle" class="section-title">¡Gracias por acompañarme en este momento tan importante!</h3>
       <p class="text-muted">Tu presencia hace este día inolvidable ✨</p>
+      <img class="logo-portada" src="assets/logo1.png" alt="Logo de la invitación" />
     </div>
   </section>
 
