@@ -86,20 +86,21 @@ body {
   font-weight: 700
 }
 
-/* delfi */
+/* --- Imagen de Delfi circular con borde blanco fino --- */
 .delfi-wrap img {
-  width: 240px;
-  height: 240px;
+  width: 220px;
+  height: 220px;
   object-fit: cover;
-  border-radius: 20px;
-  border: 10px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 40px 110px rgba(193, 124, 160, 0.16);
-  transition: transform .35s ease
+  border-radius: 50%; /* Hace la imagen circular */
+  border: 5px solid rgba(255, 255, 255, 0.95); /* Borde blanco fino */
+  box-shadow: 0 20px 60px rgba(193, 124, 160, 0.18); /* Sombra suave rosada */
+  transition: transform 0.35s ease;
 }
 
 .delfi-wrap img:hover {
-  transform: translateY(-6px)
+  transform: translateY(-6px) scale(1.03);
 }
+
 
 /* banner */
 .banner-date {
@@ -507,4 +508,152 @@ footer {
   position: relative;
   min-height: 100vh;
   padding-bottom: 100px; /* espacio para el footer */
+}
+
+@media (max-width: 480px) {
+  .delfi-wrap img {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+
+/* === Ajustes para sección fiesta (títulos, layout izq/der, botón CTA) === */
+.fiesta-header {
+  gap: 10px;
+}
+
+.fiesta-icon img.party-icon {
+  width: 56px;
+  height: 56px;
+  display: block;
+  filter: drop-shadow(0 8px 18px rgba(193,124,160,0.10));
+}
+
+.fiesta-title {
+  color: var(--accent1);
+  font-family: "Playfair Display", serif;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 0.6px;
+  margin: 0;
+  text-shadow: 0 6px 18px rgba(255,158,207,0.06);
+}
+
+/* subtítulo tierno */
+.subtitulo-fiesta {
+  font-weight: 600;
+  color: #6b3f49;
+  margin-bottom: 18px;
+}
+
+/* Info column */
+.info-col p#fiestaText { font-size: 15px; color: var(--text); }
+
+/* CTA destacado (botón "Cómo llegar") */
+.btn-cta {
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: white;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 12px 36px rgba(203,125,167,0.14), inset 0 -2px 0 rgba(0,0,0,0.03);
+  border: 0;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.btn-cta:hover { transform: translateY(-4px); box-shadow: 0 20px 44px rgba(203,125,167,0.18); }
+
+/* Countdown card (derecha) — fuerza alineación abajo-derecha */
+.countdown-card{
+  min-width: 260px;
+  max-width: 320px;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,253,0.98));
+  border: 1px solid rgba(203,125,167,0.06);
+  box-shadow: 0 20px 60px rgba(193,124,160,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsivo: en pantallas pequeñas apilar y centrar */
+@media (max-width: 767.98px) {
+  .countdown-card { margin-top: 18px; min-width: auto; max-width: 100%; }
+  .info-col { text-align: center; }
+  .fiesta-header { justify-content: center; }
+}
+
+/* === Ajustes para sección fiesta (títulos, layout izq/der, botón CTA) === */
+.fiesta-header {
+  gap: 10px;
+}
+
+.fiesta-icon img.party-icon {
+  width: 56px;
+  height: 56px;
+  display: block;
+  filter: drop-shadow(0 8px 18px rgba(193,124,160,0.10));
+}
+
+.fiesta-title {
+  color: var(--accent1);
+  font-family: "Playfair Display", serif;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: 0.6px;
+  margin: 0;
+  text-shadow: 0 6px 18px rgba(255,158,207,0.06);
+}
+
+/* subtítulo tierno */
+.subtitulo-fiesta {
+  font-weight: 600;
+  color: #6b3f49;
+  margin-bottom: 18px;
+}
+
+/* Info column */
+.info-col p#fiestaText { font-size: 15px; color: var(--text); }
+
+/* CTA destacado (botón "Cómo llegar") */
+.btn-cta {
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: white;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 12px 36px rgba(203,125,167,0.14), inset 0 -2px 0 rgba(0,0,0,0.03);
+  border: 0;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.btn-cta:hover { transform: translateY(-4px); box-shadow: 0 20px 44px rgba(203,125,167,0.18); }
+
+/* Countdown card (derecha) — fuerza alineación abajo-derecha */
+.countdown-card{
+  min-width: 260px;
+  max-width: 320px;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,253,0.98));
+  border: 1px solid rgba(203,125,167,0.06);
+  box-shadow: 0 20px 60px rgba(193,124,160,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsivo: en pantallas pequeñas apilar y centrar */
+@media (max-width: 767.98px) {
+  .countdown-card { margin-top: 18px; min-width: auto; max-width: 100%; }
+  .info-col { text-align: center; }
+  .fiesta-header { justify-content: center; }
 }
