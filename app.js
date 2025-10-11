@@ -1,22 +1,23 @@
-/* app.js — configuración y lógica principal (actualizado) */
+/* app.js — limpio y completo
+   A: limpieza duplicados, B: kidName en H1, D: captions en carrusel, E: limpieza general
+*/
 
 /* ========== CONFIG (edita solo estas) ========== */
 const EVENT_DATE_ISO = "2025-12-06T21:00:00-03:00";
 const KID_NAME = "Delfina";
 
-const YOUTUBE_VIDEO_ID = "-n7G5Dqb3UM";
+// YouTube id (opcional). Si lo dejas vacío "", usará solo AUDIO_SRC (recomendado si querés evitar problemas).
+const YOUTUBE_VIDEO_ID = ""; // p.ej. "-n7G5Dqb3UM" OR "" para usar solo mp3 local
 
-
-/* assets (pon todo en assets/) */
-const PORTADA_IMAGE = "assets/portada.jpg";         // fondo portada
-const HERO_PHOTO = "assets/delfi.png";             // foto de Delfi
-const PARTY_ICON = "assets/icono-fiesta.svg";      // iconito fiesta
-const AUDIO_SRC = "assets/musica.mp3";             // música
+/* assets (colocar en assets/) */
+const PORTADA_IMAGE = "assets/portada.png";
+const HERO_PHOTO = "assets/delfi.png";
+const PARTY_ICON = "assets/icono-fiesta.svg";
+const AUDIO_SRC = "assets/musica.mp3"; // mp3 local fallback / preferido
 const PLAY_ICON = "assets/icono-musica_play.svg";
 const PAUSE_ICON = "assets/icono-musica_pausa.svg";
 
-/* Google Form (opcional) */
-/* Usamos la URL que pegaste como embedded. Si el shortlink no embebe, el modal abrirá en nueva pestaña */
+/* Google Form (mejor usar link "viewform?embedded=true" si podés) */
 const GOOGLE_FORM_EMBED_URL = "https://forms.gle/2PJjdBRAdbj6QGfX7?embedded=true";
 const OWNER_EMAIL = "csilbarreira@gmail.com";
 
@@ -26,100 +27,71 @@ const EVENT_ADDRESS = "Av. Millán 3724";
 const EVENT_MAP_URL = "https://maps.app.goo.gl/8hMPPE5CuvhBQKms6";
 /* ========== FIN CONFIG ========== */
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.info('app.js cargado — inicializando UI');
+/* ===== galerÍa: array de objetos con caption =====
+   Cambiá src y caption a lo que quieras. */
+const GALLERY = [
+  { src: 'assets/1.jpg', caption: '3 meses — Primer paseo' },
+  { src: 'assets/2.png', caption: 'Sonrisas recién despertadas' },
+  { src: 'assets/3.png', caption: 'Primer cumple con abuelos' },
+  { src: 'assets/4.png', caption: 'Momentos de juego' },
+  { src: 'assets/5.jpeg', caption: 'Abrazo con mamá' },
+  { src: 'assets/6.jpeg', caption: 'Descubriendo el mundo' },
+  { src: 'assets/7.jpeg', caption: 'Burbujas y risas' },
+  { src: 'assets/8.jpeg', caption: 'Tortita dulce' }
+];
 
-  // portada background & images
+/* ===== estado interno ===== */
+let ytPlayer = null;
+let usingYouTube = Boolean(YOUTUBE_VIDEO_ID && YOUTUBE_VIDEO_ID.length > 3);
+
+document.addEventListener('DOMContentLoaded', () => {
+  // aplicar imágenes y textos
   const portadaMedia = document.querySelector('.portada-media');
   if (portadaMedia) portadaMedia.style.backgroundImage = `url('${PORTADA_IMAGE}')`;
+
   const delfi = document.getElementById('delfiPhoto'); if (delfi) delfi.src = HERO_PHOTO;
   const partyIcon = document.getElementById('partyIcon'); if (partyIcon) partyIcon.src = PARTY_ICON;
 
-  // kid name
   const kidNameEl = document.getElementById('kidName'); if (kidNameEl) kidNameEl.textContent = KID_NAME;
 
-  // banner date
+  // banner fecha (si existe)
   const bannerDate = document.getElementById('bannerDate');
   if (bannerDate) {
-    bannerDate.querySelector('.date-left').textContent = new Date(EVENT_DATE_ISO).toLocaleString('es-ES', { day: '2-digit', month: 'long' });
-    bannerDate.querySelector('.date-right').textContent = new Date(EVENT_DATE_ISO).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) + ` — ${EVENT_LOCATION_NAME}`;
+    try {
+      bannerDate.querySelector('.date-left').textContent = new Date(EVENT_DATE_ISO).toLocaleString('es-ES', { day: '2-digit', month: 'long' });
+      bannerDate.querySelector('.date-right').textContent = new Date(EVENT_DATE_ISO).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) + ` — ${EVENT_LOCATION_NAME}`;
+    } catch (e) { /* ignore */ }
   }
 
-  // map link
-  const mapLink = document.getElementById('mapLink'); if (mapLink) mapLink.href = EVENT_MAP_URL;
+  // como llegar
   const comoLlegar = document.getElementById('comoLlegar'); if (comoLlegar) comoLlegar.href = EVENT_MAP_URL;
-  const showMapBtn = document.getElementById('showMapBtn'); if (showMapBtn) showMapBtn.addEventListener('click', () => window.open(EVENT_MAP_URL, '_blank'));
 
-  // Confirm links (embed form or mailto)
-  const confirmLink = document.getElementById('openFormBtn');
+  // form buttons
   const confirmLink2 = document.getElementById('openFormBtn2');
-  const mailtoLink = document.getElementById('mailtoLink');
-  if (GOOGLE_FORM_EMBED_URL && GOOGLE_FORM_EMBED_URL.length > 5) {
-    if (confirmLink) confirmLink.addEventListener('click', () => openFormModal(GOOGLE_FORM_EMBED_URL));
-    if (confirmLink2) confirmLink2.addEventListener('click', () => openFormModal(GOOGLE_FORM_EMBED_URL));
-    if (mailtoLink) mailtoLink.href = `mailto:${OWNER_EMAIL}?subject=RSVP%20-%20${encodeURIComponent(KID_NAME)}`;
-    console.info('Confirm buttons configured to open Google Form modal');
-  } else {
-    if (confirmLink) confirmLink.addEventListener('click', () => fallbackMail());
-    if (confirmLink2) confirmLink2.addEventListener('click', () => fallbackMail());
-    if (mailtoLink) mailtoLink.href = `mailto:${OWNER_EMAIL}?subject=RSVP%20-%20${encodeURIComponent(KID_NAME)}`;
-    console.info('Confirm buttons configured to use mailto fallback');
-  }
+  if (confirmLink2) confirmLink2.addEventListener('click', () => openFormModal(GOOGLE_FORM_EMBED_URL));
 
-  // gallery (assets images) -> crear carousel + thumbs + fancybox
-  const galleryImgs = [
-    'assets/1.jpg', 'assets/2.png', 'assets/3.png', 'assets/4.png',
-    'assets/5.jpeg', 'assets/6.jpeg', 'assets/7.jpeg', 'assets/8.jpeg'
-  ];
-  const carouselInner = document.getElementById('carouselInner');
-  const galleryThumbs = document.getElementById('galleryThumbs');
-
-  if (carouselInner && galleryThumbs) {
-    carouselInner.innerHTML = '';
-    galleryThumbs.innerHTML = '';
-
-    galleryImgs.forEach((src, i) => {
-      // slide
-      const active = i === 0 ? ' active' : '';
-      const slide = document.createElement('div');
-      slide.className = `carousel-item${active}`;
-      slide.innerHTML = `
-        <a data-fancybox="gallery" href="${src}">
-          <img src="${src}" class="d-block w-100" alt="Foto ${i+1}">
-        </a>
-      `;
-      carouselInner.appendChild(slide);
-
-      // thumb
-      const col = document.createElement('div');
-      col.className = 'col-4 col-sm-3 col-md-2 thumb mb-2';
-      col.innerHTML = `<a data-fancybox="gallery" href="${src}"><img src="${src}" alt="Mini ${i+1}" /></a>`;
-      galleryThumbs.appendChild(col);
-    });
-
-    console.info('Carrusel y miniaturas cargadas con', galleryImgs.length, 'imágenes');
-    // inicializar el carousel (bootstrap)
-    try { $('#galleryCarousel').carousel(); } catch (e) { /* si jQuery/Bootstrap no disponibles */ }
-  }
-
+  // inicializar galería (carrusel + thumbs)
+  initGallery();
 
   // countdown
   startCountdown(EVENT_DATE_ISO);
 
-  // audio toggle
+  // audio toggle (solo una definición, limpia)
   setupAudioToggle();
 
-  // smooth scroll fallback for older browsers: intercept SVG links for precise offset
+  // smooth scroll para flechitas
   document.querySelectorAll('.scroll-flecha').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
+      const selector = a.getAttribute('href');
+      if (!selector) return;
+      const target = document.querySelector(selector);
       if (!target) return;
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 
-  // keyboard navigation (ArrowDown to go next)
+  // navegación por teclado (ArrowDown -> siguiente sección)
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown') {
       const sections = Array.from(document.querySelectorAll('.seccion'));
@@ -133,10 +105,60 @@ document.addEventListener('DOMContentLoaded', () => {
   console.info('Inicialización completa');
 });
 
+/* ===== Gallery: crear slides + thumbs, agregar captions ===== */
+function initGallery() {
+  const carouselInner = document.getElementById('carouselInner');
+  const galleryThumbs = document.getElementById('galleryThumbs');
+  if (!carouselInner || !galleryThumbs) return;
+
+  carouselInner.innerHTML = '';
+  galleryThumbs.innerHTML = '';
+
+  GALLERY.forEach((item, i) => {
+    const active = i === 0 ? ' active' : '';
+    // slide con caption
+    const slide = document.createElement('div');
+    slide.className = `carousel-item${active}`;
+    slide.innerHTML = `
+      <a data-fancybox="gallery" href="${item.src}">
+        <img src="${item.src}" class="d-block w-100" alt="${item.caption || 'Foto'}">
+      </a>
+      <div class="carousel-caption d-none d-md-block">
+        <p class="small mb-0">${item.caption || ''}</p>
+      </div>
+    `;
+    carouselInner.appendChild(slide);
+
+    // thumb
+    const col = document.createElement('div');
+    col.className = 'col-4 col-sm-3 col-md-2 thumb mb-2 text-center';
+    col.innerHTML = `<img src="${item.src}" alt="Mini ${i+1}" class="img-fluid rounded" data-index="${i}" style="cursor:pointer;"/>`;
+    galleryThumbs.appendChild(col);
+  });
+
+  // Inicializar bootstrap carousel (si jQuery/Bootstrap están disponibles)
+  try { $('#galleryCarousel').carousel(); } catch (e) { /* ok */ }
+
+  // click en miniatura salta al slide
+  galleryThumbs.querySelectorAll('img[data-index]').forEach(img => {
+    img.addEventListener('click', (ev) => {
+      const idx = Number(ev.currentTarget.getAttribute('data-index') || 0);
+      try { $('#galleryCarousel').carousel(idx); } catch (e) { 
+        // fallback: scroll al slide y mostrar Fancybox
+        const slides = document.querySelectorAll('#carouselInner .carousel-item');
+        if (slides[idx]) slides[idx].scrollIntoView({behavior:'smooth'});
+      }
+    });
+  });
+
+  // inicializar fancybox en enlaces existentes
+  try { Fancybox.bind('[data-fancybox="gallery"]', {}); } catch(e){ /* ok */ }
+}
+
 /* ===== Countdown ===== */
 function startCountdown(isoDate) {
   const target = new Date(isoDate).getTime();
-  if (isNaN(target)) { console.warn('startCountdown: fecha inválida:', isoDate); return; }
+  if (isNaN(target)) return;
   const tick = () => {
     const now = Date.now();
     const diff = Math.max(0, target - now);
@@ -149,69 +171,22 @@ function startCountdown(isoDate) {
     const h = document.getElementById('cd-hours'); if (h) h.textContent = String(hours).padStart(2, '0');
     const m = document.getElementById('cd-mins'); if (m) m.textContent = String(minutes).padStart(2, '0');
     const sec = document.getElementById('cd-secs'); if (sec) sec.textContent = String(seconds).padStart(2, '0');
-    if (diff <= 0) clearInterval(iv);
   };
   tick();
-  const iv = setInterval(tick, 1000);
+  setInterval(tick, 1000);
 }
 
-/* ===== Audio control ===== */
+/* ===== Audio control (YouTube optional, MP3 fallback) ===== */
 function setupAudioToggle() {
   const audio = document.getElementById('bgAudio');
   const toggle = document.getElementById('audioToggle');
   const playI = document.getElementById('audioPlay');
   const pauseI = document.getElementById('audioPause');
+
+  // asignar fuente local si existe
   if (audio && AUDIO_SRC && AUDIO_SRC.length > 3) audio.src = AUDIO_SRC;
 
-  if (!toggle || !audio) { console.warn('Audio toggle or audio element no encontrados'); return; }
-  toggle.style.zIndex = 14000;
-  toggle.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play().catch(() => { /* autoplay blocked */ });
-      syncAudioIcons(true);
-    } else {
-      audio.pause();
-      syncAudioIcons(false);
-    }
-  });
-  audio.addEventListener('ended', () => syncAudioIcons(false));
-}
-function syncAudioIcons(isPlaying) {
-  const playI = document.getElementById('audioPlay');
-  const pauseI = document.getElementById('audioPause');
-  const toggle = document.getElementById('audioToggle');
-  if (!playI || !pauseI) return;
-  if (isPlaying) { playI.classList.add('hidden'); pauseI.classList.remove('hidden'); toggle.setAttribute('aria-pressed', 'true'); }
-  else { playI.classList.remove('hidden'); pauseI.classList.add('hidden'); toggle.setAttribute('aria-pressed', 'false'); }
-}
-
-/* ===== Form modal or mailto fallback ===== */
-function openFormModal(url) {
-  const iframe = document.getElementById('formIframe');
-  if (iframe) iframe.src = url;
-  // Try to open modal; if modal unavailable, open in new tab
-  try { $('#formModal').modal('show'); }
-  catch (e) { window.open(url, '_blank'); }
-}
-function fallbackMail() {
-  const body = encodeURIComponent(`Hola,%0A%0AMi nombre es:%0AConfirmo mi asistencia: Sí/No%0ACantidad adultos:%0ACantidad peques:%0AEdades:%0ARestricciones alimentarias:%0AMensaje:%0A`);
-  window.location.href = `mailto:${OWNER_EMAIL}?subject=RSVP%20-%20${encodeURIComponent(KID_NAME)}&body=${body}`;
-}
-
-
-let ytPlayer = null;
-let usingYouTube = false;
-
-function setupAudioToggle(){
-  const audio = document.getElementById('bgAudio');
-  const toggle = document.getElementById('audioToggle');
-
-  usingYouTube = Boolean(typeof YOUTUBE_VIDEO_ID !== 'undefined' && YOUTUBE_VIDEO_ID && YOUTUBE_VIDEO_ID.length > 3);
-
-  // Asegurar fallback local
-  if(audio && AUDIO_SRC && AUDIO_SRC.length > 3) audio.src = AUDIO_SRC;
-
-  // Helper para cargar la API de YouTube si hace falta
+  // helper: cargar API YT si se usa
   const ensureYTApiLoaded = () => {
     if (!usingYouTube) return Promise.resolve();
     return new Promise((resolve, reject) => {
@@ -220,10 +195,8 @@ function setupAudioToggle(){
       tag.src = "https://www.youtube.com/iframe_api";
       tag.async = true;
       tag.onload = () => {
-        const waitFor = setInterval(()=>{
-          if(window.YT && window.YT.Player){ clearInterval(waitFor); resolve(); }
-        }, 100);
-        setTimeout(()=>{ clearInterval(waitFor); resolve(); }, 3000);
+        const wait = setInterval(()=> { if (window.YT && window.YT.Player) { clearInterval(wait); resolve(); } }, 100);
+        setTimeout(()=> { clearInterval(wait); resolve(); }, 3000);
       };
       tag.onerror = () => reject(new Error('YT API load error'));
       document.head.appendChild(tag);
@@ -233,96 +206,80 @@ function setupAudioToggle(){
   const createYTPlayer = () => {
     if(!usingYouTube) return;
     if(ytPlayer) return;
-    // wrapper oculto para el iframe
     const wrapper = document.createElement('div');
     wrapper.id = 'yt-player-wrapper';
-    wrapper.style.cssText = 'position:fixed;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;pointer-events:none;';
+    wrapper.style.cssText = 'position:fixed;left:-9999px;width:1px;height:1px;overflow:hidden;pointer-events:none;';
     document.body.appendChild(wrapper);
 
     ytPlayer = new YT.Player(wrapper.id, {
-      height: '1',
-      width: '1',
-      videoId: YOUTUBE_VIDEO_ID,
-      playerVars: {
-        autoplay: 0,
-        controls: 0,
-        rel: 0,
-        modestbranding: 1,
-        playsinline: 1
-      },
+      height: '1', width: '1', videoId: YOUTUBE_VIDEO_ID,
+      playerVars: { autoplay:0, controls:0, rel:0, modestbranding:1, playsinline:1 },
       events: {
-        onReady: (e)=>{ console.info('YT player ready'); },
-        onStateChange: (e)=> {
-          if(e.data === YT.PlayerState.PLAYING) syncAudioIcons(true);
-          if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) syncAudioIcons(false);
+        onReady: () => console.info('YT ready'),
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.PLAYING) syncAudioIcons(true);
+          if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) syncAudioIcons(false);
         },
         onError: (e) => {
-          console.warn('YT player error', e);
-          // NO abrir pestañas. Usar audio local como fallback.
-          try { if(ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo(); } catch(e){}
-          if(audio){
-            audio.play().catch(err => console.warn('No se pudo iniciar audio local tras fallo YT:', err));
-            syncAudioIcons(true);
-          }
+          console.warn('YT error', e);
+          if (audio) audio.play().catch(()=>{});
         }
       }
     });
   };
 
-  if(!toggle) return console.warn('Audio toggle no encontrado');
+  if (!toggle) return;
+  toggle.style.zIndex = 14000;
 
-  toggle.addEventListener('click', async ()=>{
-    // Si hay YT configurado, intentamos reproducir inline (si falla, caemos al mp3)
-    if(usingYouTube){
+  toggle.addEventListener('click', async () => {
+    // prefer YT inline if configurado, fallback a MP3
+    if (usingYouTube) {
       try {
         await ensureYTApiLoaded();
-        if(!ytPlayer) createYTPlayer();
-
-        const safeState = () => (ytPlayer && ytPlayer.getPlayerState) ? ytPlayer.getPlayerState() : -2;
-        const state = safeState();
-
-        if(state === YT.PlayerState.PLAYING){
-          ytPlayer.pauseVideo();
-          syncAudioIcons(false);
-        } else {
-          try {
-            ytPlayer.playVideo();
-            syncAudioIcons(true);
-          } catch(err){
-            // fallback silencioso a mp3 local (NO abrir pestañas)
-            console.warn('Error reproduciendo YT in-page, usando mp3 local como fallback', err);
-            if(audio){
-              audio.play().catch(e=>console.warn('No se pudo reproducir audio local tras fallo YT:', e));
-              syncAudioIcons(true);
-            }
-          }
-        }
+        if (!ytPlayer) createYTPlayer();
+        const state = (ytPlayer && ytPlayer.getPlayerState) ? ytPlayer.getPlayerState() : -2;
+        if (state === YT.PlayerState.PLAYING) { ytPlayer.pauseVideo(); syncAudioIcons(false); }
+        else { ytPlayer.playVideo(); syncAudioIcons(true); }
         return;
-      } catch(err){
-        console.warn('YT API no disponible o fallo cargando, fallback a audio local', err);
-        // seguimos al fallback local abajo
+      } catch (err) {
+        console.warn('YT fallback', err);
+        // cae a mp3 local
       }
     }
 
-    // Fallback: togglear el MP3 local
-    if(audio){
-      if(audio.paused){
-        audio.play().catch((err)=>{ console.warn('No se pudo iniciar audio local:', err); });
-        syncAudioIcons(true);
-      } else {
-        audio.pause();
-        syncAudioIcons(false);
-      }
+    // fallback / normal MP3 toggle
+    if (audio) {
+      if (audio.paused) { audio.play().catch(()=>{}); syncAudioIcons(true); }
+      else { audio.pause(); syncAudioIcons(false); }
     }
   });
 
-  // Si se reproduce el MP3 local desde otro control, pausamos YT si está sonando
+  // si mp3 se reproduce desde otro control, pausar YT
   if (audio) {
-    audio.addEventListener('play', ()=> { 
-      try { if(ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState()===YT.PlayerState.PLAYING) ytPlayer.pauseVideo(); } catch(e){}
-      syncAudioIcons(true); 
-    });
+    audio.addEventListener('play', ()=> { try { if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState()===YT.PlayerState.PLAYING) ytPlayer.pauseVideo(); } catch(e){}; syncAudioIcons(true); });
     audio.addEventListener('pause', ()=> syncAudioIcons(false));
     audio.addEventListener('ended', ()=> syncAudioIcons(false));
   }
+}
+
+function syncAudioIcons(isPlaying) {
+  const playI = document.getElementById('audioPlay');
+  const pauseI = document.getElementById('audioPause');
+  const toggle = document.getElementById('audioToggle');
+  if (!playI || !pauseI) return;
+  if (isPlaying) { playI.classList.add('hidden'); pauseI.classList.remove('hidden'); toggle.setAttribute('aria-pressed','true'); }
+  else { playI.classList.remove('hidden'); pauseI.classList.add('hidden'); toggle.setAttribute('aria-pressed','false'); }
+}
+
+/* ===== Form modal or mailto fallback ===== */
+function openFormModal(url) {
+  const iframe = document.getElementById('formIframe');
+  if (iframe) iframe.src = url;
+  // intentar modal; si falla abrir en nueva pestaña
+  try { $('#formModal').modal('show'); } catch(e) { window.open(url,'_blank'); }
+}
+
+function fallbackMail() {
+  const body = encodeURIComponent(`Hola,%0A%0AMi nombre es:%0AConfirmo mi asistencia: Sí/No%0ACantidad adultos:%0ACantidad peques:%0AEdades:%0ARestricciones alimentarias:%0AMensaje:%0A`);
+  window.location.href = `mailto:${OWNER_EMAIL}?subject=RSVP%20-%20${encodeURIComponent(KID_NAME)}&body=${body}`;
 }
