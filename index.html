@@ -11,11 +11,14 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;600;700&display=swap"
     rel="stylesheet">
-  <!-- Bootstrap -->
+
+  <!-- Bootstrap (opcional) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Fancybox -->
+
+  <!-- Fancybox (lightbox) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.css" />
-  <!-- Custom -->
+
+  <!-- Custom styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -30,14 +33,16 @@
     <source src="assets/musica.mp3" type="audio/mp3">
   </audio>
 
-  <!-- === SECCIÓN 1: PORTADA === -->
-  <section id="portada" class="seccion portada">
+  <!-- CONFETTI CANVAS (oculto por defecto) -->
+  <canvas id="confettiCanvas"
+    style="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:15000;display:none;"></canvas>
+
+  <!-- === SECCIÓN 1: PORTADA (foto circular + banner) === -->
+  <section id="portada" class="seccion portada" aria-labelledby="mainTitle">
     <div class="portada-media" aria-hidden="true"></div>
 
     <div class="portada-inner container text-center">
-      <h1 id="mainTitle">
-        <span class="highlight-title">Mi primer añito - Delfina</span>
-      </h1>
+      <h1 id="mainTitle">Mi primer añito • <span id="kidName">Delfina</span></h1>
 
       <div class="delfi-wrap mx-auto" role="img" aria-label="Foto de Delfina">
         <img id="delfiPhoto" src="assets/delfi.png" alt="Delfina" />
@@ -49,6 +54,7 @@
       </div>
     </div>
 
+    <!-- Flechita a siguiente sección -->
     <a class="scroll-flecha" href="#info" aria-label="Ir a información">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
@@ -57,84 +63,94 @@
     </a>
   </section>
 
-<!-- === SECCIÓN INFO === -->
-<section id="info" class="seccion info">
-  <div class="container">
+  <!-- === SECCIÓN INFO DE LA FIESTA (INFO IZQ, COUNTDOWN DER) === -->
+  <section id="info" class="seccion info">
+    <div class="container text-center">
+      <h2 class="section-title">¡Te espero para festejar este gran momento de mi vida!</h2>
 
-    <!-- Título con icono -->
-    <div class="d-flex align-items-center justify-content-center mb-3 fiesta-header">
-      <div class="fiesta-icon mr-3" aria-hidden="true">
-        <img id="partyIcon" src="assets/icono-fiesta.svg" alt="" class="party-icon" />
-      </div>
-      <h3 class="fiesta-title mb-0">FIESTA</h3>
-    </div>
+      <div class="row align-items-center mt-4">
+        <!-- Info Fiesta (izquierda) -->
+        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+          <div class="party-icon-wrap mx-auto mb-3 mb-md-0">
+            <img id="partyIcon" src="assets/icono-fiesta.svg" alt="Fiesta" class="party-icon" />
+          </div>
+          <h3 class="title-fiesta">FIESTA</h3>
+          <p id="fiestaText">
+            📅 Sábado 06 de diciembre — 18:00 a 22:00 hs.<br />
+            📍 Salón Aventurina — Av. Millán 3724
+          </p>
 
-    <!-- Subtítulo emotivo -->
-    <p class="text-center lead mb-4 subtitulo-fiesta">¡Te espero para festejar este gran momento de mi vida!</p>
+          <p class="text-muted small mb-2">
+            Hace un año aterrizaba en los brazos de mis papis a cambiarles el mundo para siempre. Este primer añito lo
+            celebramos con amor, música, juegos y un montón de besos. 💖
+          </p>
 
-    <div class="row">
-      <!-- IZQUIERDA: info y boton -->
-      <div class="col-lg-7 col-md-12 info-col">
-        <p id="fiestaText" class="mb-3">
-          📅 <strong>Sábado 06 de diciembre</strong> — 18:00 a 22:00 hs.<br />
-          📍 <strong>Salón Aventurina</strong> — Av. Millán 3724
-        </p>
-
-        <p class="text-muted mb-3">
-          Hace un año aterrizaba en los brazos de mis papis a cambiarles el mundo para siempre. Este primer añito lo
-          celebramos con amor, música, juegos y un montón de besos. 💖
-        </p>
-
-        <div class="d-flex align-items-center gap-2 mt-2">
-          <a id="comoLlegar" href="https://maps.app.goo.gl/8hMPPE5CuvhBQKms6" class="btn btn-cta" target="_blank" rel="noopener">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="mr-2" aria-hidden="true">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#fff"/>
-              <circle cx="12" cy="9" r="2.5" fill="#ffb6d5"/>
-            </svg>
-            CÓMO LLEGAR
-          </a>
-
-          <a class="btn btn-outline-pink" href="mailto:csilbarreira@gmail.com?subject=Consulta%20cumple%20Delfina">Contacto</a>
+          <!-- Botón centrado y destacado -->
+          <div class="d-flex justify-content-center mt-2">
+            <a id="comoLlegar" href="https://maps.app.goo.gl/8hMPPE5CuvhBQKms6" class="btn btn-pink btn-lg"
+              target="_blank" rel="noopener">CÓMO LLEGAR</a>
+          </div>
         </div>
-      </div>
 
-      <!-- DERECHA: espacio para countdown (alineado abajo-derecha) -->
-      <div class="col-lg-5 col-md-12 d-flex">
-        <div class="countdown-card ml-auto mt-auto">
-          <p class="lead text-center mb-2">Cuenta regresiva</p>
-          <div id="countdown" class="d-flex justify-content-center align-items-center flex-wrap">
-            <div class="cd-unit outlined"><div id="cd-days" class="num">--</div><div class="lbl">DÍAS</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit outlined"><div id="cd-hours" class="num">--</div><div class="lbl">HRS</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit outlined"><div id="cd-mins" class="num">--</div><div class="lbl">MIN</div></div>
-            <div class="cd-sep">:</div>
-            <div class="cd-unit outlined"><div id="cd-secs" class="num">--</div><div class="lbl">SEG</div></div>
+        <!-- Countdown (derecha) -->
+        <div class="col-md-6">
+          <div class="countdown-card p-3">
+            <p class="lead text-center mb-2">¡Te espero para festejar este gran momento de mi vida!</p>
+            <div id="countdown" class="d-flex justify-content-center align-items-center flex-wrap">
+              <div class="cd-unit outlined">
+                <div id="cd-days" class="num">--</div>
+                <div class="lbl">DÍAS</div>
+              </div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit outlined">
+                <div id="cd-hours" class="num">--</div>
+                <div class="lbl">HRS</div>
+              </div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit outlined">
+                <div id="cd-mins" class="num">--</div>
+                <div class="lbl">MIN</div>
+              </div>
+              <div class="cd-sep">:</div>
+              <div class="cd-unit outlined">
+                <div id="cd-secs" class="num">--</div>
+                <div class="lbl">SEG</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div> <!-- .row -->
+    </div>
 
-  </div> <!-- .container -->
+    <!-- Flecha abajo -->
+    <a class="scroll-flecha" href="#galeria" aria-label="Ir a galería">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    </a>
+  </section>
 
-  <a class="scroll-flecha" href="#galeria" aria-label="Ir a galería">
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  </a>
-</section>
-
-
-  <!-- === GALERÍA === -->
-  <section id="galeria" class="seccion galeria">
+  <!-- === SECCIÓN GALERÍA === -->
+  <section id="galeria" class="seccion galeria" aria-labelledby="galTitle">
     <div class="container">
-      <h3 class="section-title text-center mb-2">Galería — <span class="highlight-title">Mi primer añito</span></h3>
+      <h3 id="galTitle" class="section-title text-center mb-2">Galería — <span class="highlight-title">Mi primer
+          añito</span></h3>
       <p class="text-center text-muted mb-4">Pequeños momentos, grandes recuerdos ♥</p>
-      <p class="lead small text-muted text-center">Aquí algunas fotos de este primer añito: risas, descubrimientos y
-        mimos infinitos.</p>
 
-      <div id="galleryCarousel" class="carousel slide mb-3" data-ride="carousel" data-interval="4000" data-touch="true">
-        <div class="carousel-inner" id="carouselInner"></div>
+      <!-- Mensaje tierno / mini-cuento -->
+      <div class="text-center mb-3">
+        <p class="lead small text-muted">Hace un año llegué a completar la felicidad de mis papis. Aquí algunos
+          recuerdos de mi primer añito.</p>
+      </div>
+
+      <!-- Carrusel Bootstrap -->
+      <div id="galleryCarousel" class="carousel slide mb-3" data-ride="carousel" data-interval="4000">
+        <div class="carousel-inner" id="carouselInner">
+          <!-- slides se generan desde JS -->
+        </div>
+
+        <!-- controles -->
         <a class="carousel-control-prev" href="#galleryCarousel" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Anterior</span>
@@ -145,10 +161,13 @@
         </a>
       </div>
 
-      <div class="row justify-content-center" id="galleryThumbs"></div>
+      <!-- miniaturas (clic -> fancybox) -->
+      <div class="row justify-content-center" id="galleryThumbs" role="list">
+        <!-- miniaturas generadas por JS -->
+      </div>
     </div>
 
-    <a class="scroll-flecha" href="#confirmar" aria-label="Ir a confirmar">
+    <a class="scroll-flecha" href="#rsvp-gracias" aria-label="Ir a confirmar">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
           stroke-linejoin="round" />
@@ -156,45 +175,64 @@
     </a>
   </section>
 
-  <!-- === CONFIRMAR === -->
-  <section id="confirmar" class="seccion confirmar">
-    <div class="container text-center">
-      <h3 class="section-title mb-2">Confirmación de asistencia</h3>
-      <p>Contanos si venís, cuántos adultos y peques, edades y si hay restricciones alimentarias.</p>
-      <button id="openFormBtn2" class="btn btn-pink btn-lg">Confirmar asistencia</button>
+  <!-- === SECCIÓN: RSVP + GRACIAS (unificada) === -->
+  <section id="rsvp-gracias" class="seccion rsvp-gracias" aria-labelledby="rsvpTitle">
+    <div class="container">
+
+      <div class="row align-items-center">
+        <!-- COL IZQUIERDA: RSVP / Form CTA -->
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h3 id="rsvpTitle" class="section-title">Confirmación de asistencia</h3>
+          <p class="mb-3">Contanos si venís, cuántos adultos y peques, edades y si hay restricciones alimentarias.</p>
+
+          <!-- Botón principal (abre Google Form en modal) -->
+          <div class="mb-3">
+            <button id="openFormBtnMain" class="btn btn-pink btn-lg">Confirmar asistencia</button>
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+      <!-- COL DERECHA: Tarjeta de Gracias + foto -->
+      <div class="col-lg-6">
+        <div class="card thanks-card p-3 text-center">
+          <img src="assets/delfi.png" alt="Delfina" class="thanks-photo mb-3" />
+          <h4 class="mb-1">¡Gracias por ser parte de este día!</h4>
+          <p class="text-muted small mb-2">Tu presencia hace el primer añito de Delfi inolvidable.</p>
+
+          <div class="mb-2">
+            <button id="confettiBtn" class="btn btn-outline-pink">Celebrar 🎉</button>
+          </div>
+
+          <div id="afterRsvpMsg" style="display:none;" class="mt-2">
+            <p class="small text-success">¡Perfecto! Ya anotamos tu confirmación. Nos vemos pronto. 💖</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <a class="scroll-flecha" href="#gracias" aria-label="Ir a gracias">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
-    </a>
+    </div>
+
+    <!-- FOOTER ancho (ocupando todo el ancho de la sección, abajo) -->
+    <footer class="footer-full">
+      <div class="container text-center">
+        <p class="mb-1">Hecha con amor por mis papis 💕</p>
+        <small>© 2025 — Mis papis, con todo su amor ✨</small>
+      </div>
+    </footer>
   </section>
 
-<!-- === SECCIÓN GRACIAS === -->
-<section id="gracias" class="seccion gracias">
-  <div class="container text-center">
-    <h3 class="section-title">¡Gracias por acompañarme en este momento tan importante!</h3>
-    <p class="text-muted">Tu presencia hace este día inolvidable ✨</p>
-    <img class="logo-portada" src="assets/logo1.png" alt="Logo" />
-  </div>
-
-  <!-- === FOOTER === -->
-  <footer class="footer-full">
-    <small>© 2025 — Hecha con amor por mis papis 💕</small>
-  </footer>
-</section>
-
-
-
-
-  <!-- Modal Google Form -->
-  <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+  <!-- Modal iframe para Google Form -->
+  <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
+    aria-labelledby="formModalLabel">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body p-0">
-          <button type="button" class="close p-2" data-dismiss="modal" aria-label="Cerrar">&times;</button>
+          <button type="button" class="close p-2" data-dismiss="modal" aria-label="Cerrar"><span
+              aria-hidden="true">&times;</span></button>
           <iframe id="formIframe" src="" width="100%" height="640" frameborder="0" title="Formulario RSVP"></iframe>
         </div>
       </div>
