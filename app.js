@@ -1,23 +1,16 @@
-/* app.js — limpio y completo
-   A: limpieza duplicados, B: kidName en H1, D: captions en carrusel, E: limpieza general
-*/
+/* app.js — configuración y lógica principal (limpio y combinado) */
 
 /* ========== CONFIG (edita solo estas) ========== */
 const EVENT_DATE_ISO = "2025-12-06T21:00:00-03:00";
 const KID_NAME = "Delfina";
 
-// YouTube id (opcional). Si lo dejas vacío "", usará solo AUDIO_SRC (recomendado si querés evitar problemas).
-const YOUTUBE_VIDEO_ID = ""; // p.ej. "-n7G5Dqb3UM" OR "" para usar solo mp3 local
-
-/* assets (colocar en assets/) */
-const PORTADA_IMAGE = "assets/portada.png";
+/* assets */
+const PORTADA_IMAGE = "assets/portada.jpg";
 const HERO_PHOTO = "assets/delfi.png";
 const PARTY_ICON = "assets/icono-fiesta.svg";
-const AUDIO_SRC = "assets/musica.mp3"; // mp3 local fallback / preferido
-const PLAY_ICON = "assets/icono-musica_play.svg";
-const PAUSE_ICON = "assets/icono-musica_pausa.svg";
+const AUDIO_SRC = "assets/musica.mp3";
 
-/* Google Form (mejor usar link "viewform?embedded=true" si podés) */
+/* Google Form (embed) */
 const GOOGLE_FORM_EMBED_URL = "https://forms.gle/2PJjdBRAdbj6QGfX7?embedded=true";
 const OWNER_EMAIL = "csilbarreira@gmail.com";
 
@@ -27,259 +20,290 @@ const EVENT_ADDRESS = "Av. Millán 3724";
 const EVENT_MAP_URL = "https://maps.app.goo.gl/8hMPPE5CuvhBQKms6";
 /* ========== FIN CONFIG ========== */
 
-/* ===== galerÍa: array de objetos con caption =====
-   Cambiá src y caption a lo que quieras. */
-const GALLERY = [
-  { src: 'assets/1.jpg', caption: '3 meses — Primer paseo' },
-  { src: 'assets/2.png', caption: 'Sonrisas recién despertadas' },
-  { src: 'assets/3.png', caption: 'Primer cumple con abuelos' },
-  { src: 'assets/4.png', caption: 'Momentos de juego' },
-  { src: 'assets/5.jpeg', caption: 'Abrazo con mamá' },
-  { src: 'assets/6.jpeg', caption: 'Descubriendo el mundo' },
-  { src: 'assets/7.jpeg', caption: 'Burbujas y risas' },
-  { src: 'assets/8.jpeg', caption: 'Tortita dulce' }
-];
-
-/* ===== estado interno ===== */
-let ytPlayer = null;
-let usingYouTube = Boolean(YOUTUBE_VIDEO_ID && YOUTUBE_VIDEO_ID.length > 3);
+let confettiEngine = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // aplicar imágenes y textos
+  console.info('Inicializando invitación');
+
+  // portada background & images
   const portadaMedia = document.querySelector('.portada-media');
-  if (portadaMedia) portadaMedia.style.backgroundImage = `url('${PORTADA_IMAGE}')`;
+  if(portadaMedia) portadaMedia.style.backgroundImage = `url('${PORTADA_IMAGE}')`;
+  const delfi = document.getElementById('delfiPhoto'); if(delfi) delfi.src = HERO_PHOTO;
+  const partyIcon = document.getElementById('partyIcon'); if(partyIcon) partyIcon.src = PARTY_ICON;
+  const kidNameEl = document.getElementById('kidName'); if(kidNameEl) kidNameEl.textContent = KID_NAME;
 
-  const delfi = document.getElementById('delfiPhoto'); if (delfi) delfi.src = HERO_PHOTO;
-  const partyIcon = document.getElementById('partyIcon'); if (partyIcon) partyIcon.src = PARTY_ICON;
-
-  const kidNameEl = document.getElementById('kidName'); if (kidNameEl) kidNameEl.textContent = KID_NAME;
-
-  // banner fecha (si existe)
+  // banner date
   const bannerDate = document.getElementById('bannerDate');
   if (bannerDate) {
-    try {
-      bannerDate.querySelector('.date-left').textContent = new Date(EVENT_DATE_ISO).toLocaleString('es-ES', { day: '2-digit', month: 'long' });
-      bannerDate.querySelector('.date-right').textContent = new Date(EVENT_DATE_ISO).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) + ` — ${EVENT_LOCATION_NAME}`;
-    } catch (e) { /* ignore */ }
+    bannerDate.querySelector('.date-left').textContent = new Date(EVENT_DATE_ISO).toLocaleString('es-ES', { day: '2-digit', month: 'long' });
+    bannerDate.querySelector('.date-right').textContent = new Date(EVENT_DATE_ISO).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) + ` — ${EVENT_LOCATION_NAME}`;
   }
 
-  // como llegar
-  const comoLlegar = document.getElementById('comoLlegar'); if (comoLlegar) comoLlegar.href = EVENT_MAP_URL;
+  // map link
+  const comoLlegar = document.getElementById('comoLlegar'); if(comoLlegar) comoLlegar.href = EVENT_MAP_URL;
 
-  // form buttons
-  const confirmLink2 = document.getElementById('openFormBtn2');
-  if (confirmLink2) confirmLink2.addEventListener('click', () => openFormModal(GOOGLE_FORM_EMBED_URL));
-
-  // inicializar galería (carrusel + thumbs)
-  initGallery();
+  // gallery images + captions (array de objetos)
+  const galleryImgs = [
+    { src:'assets/1.jpg', caption:'Primeros sonrisas' },
+    { src:'assets/2.png', caption:'Cakesmash y risas' },
+    { src:'assets/3.png', caption:'Mimos infinitos' },
+    { src:'assets/4.png', caption:'Abrazos de la familia' },
+    { src:'assets/5.jpeg', caption:'Descubrimientos' },
+    { src:'assets/6.jpeg', caption:'Pequeños pasos' },
+    { src:'assets/7.jpeg', caption:'Besos y juegos' },
+    { src:'assets/8.jpeg', caption:'Nuestra princesita' }
+  ];
+  loadGallery(galleryImgs);
 
   // countdown
   startCountdown(EVENT_DATE_ISO);
 
-  // audio toggle (solo una definición, limpia)
+  // audio toggle + autoplay attempt
   setupAudioToggle();
 
-  // smooth scroll para flechitas
-  document.querySelectorAll('.scroll-flecha').forEach(a => {
-    a.addEventListener('click', (e) => {
+  // smooth scroll chevrons (reemplaza comportamiento nativo si hace falta)
+  document.querySelectorAll('.scroll-flecha').forEach(a=>{
+    a.addEventListener('click',(e)=>{
       e.preventDefault();
-      const selector = a.getAttribute('href');
-      if (!selector) return;
-      const target = document.querySelector(selector);
-      if (!target) return;
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const target = document.querySelector(a.getAttribute('href'));
+      if(!target) return;
+      target.scrollIntoView({behavior:'smooth',block:'start'});
     });
   });
 
-  // navegación por teclado (ArrowDown -> siguiente sección)
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown') {
+  // init RSVP + helpers
+  initRsvp();
+
+  // confetti engine
+  confettiEngine = createConfettiEngine('confettiCanvas');
+
+  // show small message when the form modal closes (UX)
+  try{
+    $('#formModal').on('hidden.bs.modal', function () {
+      // disparamos confetti breve como feedback
+      if(confettiEngine) confettiEngine.fire(70);
+      const after = document.getElementById('afterRsvpMsg');
+      if(after){ after.style.display = 'block'; setTimeout(()=> after.style.display='none',4200); }
+    });
+  }catch(e){ /* ignore if bootstrap not present */ }
+
+  // accessibility: ArrowDown navigates to next section
+  document.addEventListener('keydown',(e)=>{
+    if(e.key === 'ArrowDown'){
       const sections = Array.from(document.querySelectorAll('.seccion'));
       const top = window.scrollY;
       const currentIndex = sections.findIndex(s => s.offsetTop > top + 10);
       const next = sections[Math.max(0, currentIndex)];
-      if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if(next) next.scrollIntoView({behavior:'smooth',block:'start'});
     }
   });
-
-  console.info('Inicialización completa');
 });
 
-/* ===== Gallery: crear slides + thumbs, agregar captions ===== */
-function initGallery() {
+/* ===== load gallery (carousel + thumbs) ===== */
+function loadGallery(items){
   const carouselInner = document.getElementById('carouselInner');
   const galleryThumbs = document.getElementById('galleryThumbs');
-  if (!carouselInner || !galleryThumbs) return;
+  if(!carouselInner || !galleryThumbs) return;
 
   carouselInner.innerHTML = '';
   galleryThumbs.innerHTML = '';
 
-  GALLERY.forEach((item, i) => {
-    const active = i === 0 ? ' active' : '';
-    // slide con caption
+  items.forEach((it,i)=>{
+    const active = i===0 ? ' active' : '';
     const slide = document.createElement('div');
     slide.className = `carousel-item${active}`;
     slide.innerHTML = `
-      <a data-fancybox="gallery" href="${item.src}">
-        <img src="${item.src}" class="d-block w-100" alt="${item.caption || 'Foto'}">
+      <a data-fancybox="gallery" href="${it.src}">
+        <img src="${it.src}" class="d-block w-100" alt="Foto ${i+1}">
       </a>
-      <div class="carousel-caption d-none d-md-block">
-        <p class="small mb-0">${item.caption || ''}</p>
-      </div>
+      <div class="carousel-caption d-none d-md-block"><small>${it.caption}</small></div>
     `;
     carouselInner.appendChild(slide);
 
-    // thumb
     const col = document.createElement('div');
-    col.className = 'col-4 col-sm-3 col-md-2 thumb mb-2 text-center';
-    col.innerHTML = `<img src="${item.src}" alt="Mini ${i+1}" class="img-fluid rounded" data-index="${i}" style="cursor:pointer;"/>`;
+    col.className = 'col-auto thumb mb-2';
+    col.innerHTML = `<a data-fancybox="gallery" href="${it.src}"><img src="${it.src}" alt="Mini ${i+1}" /></a>`;
     galleryThumbs.appendChild(col);
   });
 
-  // Inicializar bootstrap carousel (si jQuery/Bootstrap están disponibles)
-  try { $('#galleryCarousel').carousel(); } catch (e) { /* ok */ }
-
-  // click en miniatura salta al slide
-  galleryThumbs.querySelectorAll('img[data-index]').forEach(img => {
-    img.addEventListener('click', (ev) => {
-      const idx = Number(ev.currentTarget.getAttribute('data-index') || 0);
-      try { $('#galleryCarousel').carousel(idx); } catch (e) { 
-        // fallback: scroll al slide y mostrar Fancybox
-        const slides = document.querySelectorAll('#carouselInner .carousel-item');
-        if (slides[idx]) slides[idx].scrollIntoView({behavior:'smooth'});
-      }
-    });
-  });
-
-  // inicializar fancybox en enlaces existentes
-  try { Fancybox.bind('[data-fancybox="gallery"]', {}); } catch(e){ /* ok */ }
+  try{ $('#galleryCarousel').carousel(); }catch(e){}
 }
 
 /* ===== Countdown ===== */
-function startCountdown(isoDate) {
+function startCountdown(isoDate){
   const target = new Date(isoDate).getTime();
-  if (isNaN(target)) return;
-  const tick = () => {
+  if(isNaN(target)) return;
+  const tick = ()=>{
     const now = Date.now();
-    const diff = Math.max(0, target - now);
-    const s = Math.floor(diff / 1000);
-    const days = Math.floor(s / (3600 * 24));
-    const hours = Math.floor((s % (3600 * 24)) / 3600);
-    const minutes = Math.floor((s % 3600) / 60);
+    const diff = Math.max(0,target-now);
+    const s = Math.floor(diff/1000);
+    const days = Math.floor(s / (3600*24));
+    const hours = Math.floor((s % (3600*24))/3600);
+    const minutes = Math.floor((s % 3600)/60);
     const seconds = s % 60;
-    const d = document.getElementById('cd-days'); if (d) d.textContent = days;
-    const h = document.getElementById('cd-hours'); if (h) h.textContent = String(hours).padStart(2, '0');
-    const m = document.getElementById('cd-mins'); if (m) m.textContent = String(minutes).padStart(2, '0');
-    const sec = document.getElementById('cd-secs'); if (sec) sec.textContent = String(seconds).padStart(2, '0');
+    const d = document.getElementById('cd-days'); if(d) d.textContent = days;
+    const h = document.getElementById('cd-hours'); if(h) h.textContent = String(hours).padStart(2,'0');
+    const m = document.getElementById('cd-mins'); if(m) m.textContent = String(minutes).padStart(2,'0');
+    const sec = document.getElementById('cd-secs'); if(sec) sec.textContent = String(seconds).padStart(2,'0');
+    if(diff<=0) clearInterval(iv);
   };
   tick();
-  setInterval(tick, 1000);
+  const iv = setInterval(tick,1000);
 }
 
-/* ===== Audio control (YouTube optional, MP3 fallback) ===== */
-function setupAudioToggle() {
+/* ===== Audio control (MP3 autoplay attempt, toggle) ===== */
+function setupAudioToggle(){
   const audio = document.getElementById('bgAudio');
   const toggle = document.getElementById('audioToggle');
-  const playI = document.getElementById('audioPlay');
-  const pauseI = document.getElementById('audioPause');
+  if(audio && AUDIO_SRC && AUDIO_SRC.length>3) audio.src = AUDIO_SRC;
+  if(!toggle || !audio) return console.warn('Audio elements no encontrados');
 
-  // asignar fuente local si existe
-  if (audio && AUDIO_SRC && AUDIO_SRC.length > 3) audio.src = AUDIO_SRC;
+  // try autoplay once (user may block it)
+  audio.play().then(()=>{ syncAudioIcons(true); }).catch(()=>{ syncAudioIcons(false); });
 
-  // helper: cargar API YT si se usa
-  const ensureYTApiLoaded = () => {
-    if (!usingYouTube) return Promise.resolve();
-    return new Promise((resolve, reject) => {
-      if (window.YT && window.YT.Player) return resolve();
-      const tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      tag.async = true;
-      tag.onload = () => {
-        const wait = setInterval(()=> { if (window.YT && window.YT.Player) { clearInterval(wait); resolve(); } }, 100);
-        setTimeout(()=> { clearInterval(wait); resolve(); }, 3000);
-      };
-      tag.onerror = () => reject(new Error('YT API load error'));
-      document.head.appendChild(tag);
-    });
-  };
-
-  const createYTPlayer = () => {
-    if(!usingYouTube) return;
-    if(ytPlayer) return;
-    const wrapper = document.createElement('div');
-    wrapper.id = 'yt-player-wrapper';
-    wrapper.style.cssText = 'position:fixed;left:-9999px;width:1px;height:1px;overflow:hidden;pointer-events:none;';
-    document.body.appendChild(wrapper);
-
-    ytPlayer = new YT.Player(wrapper.id, {
-      height: '1', width: '1', videoId: YOUTUBE_VIDEO_ID,
-      playerVars: { autoplay:0, controls:0, rel:0, modestbranding:1, playsinline:1 },
-      events: {
-        onReady: () => console.info('YT ready'),
-        onStateChange: (e) => {
-          if (e.data === YT.PlayerState.PLAYING) syncAudioIcons(true);
-          if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) syncAudioIcons(false);
-        },
-        onError: (e) => {
-          console.warn('YT error', e);
-          if (audio) audio.play().catch(()=>{});
-        }
-      }
-    });
-  };
-
-  if (!toggle) return;
   toggle.style.zIndex = 14000;
-
-  toggle.addEventListener('click', async () => {
-    // prefer YT inline if configurado, fallback a MP3
-    if (usingYouTube) {
-      try {
-        await ensureYTApiLoaded();
-        if (!ytPlayer) createYTPlayer();
-        const state = (ytPlayer && ytPlayer.getPlayerState) ? ytPlayer.getPlayerState() : -2;
-        if (state === YT.PlayerState.PLAYING) { ytPlayer.pauseVideo(); syncAudioIcons(false); }
-        else { ytPlayer.playVideo(); syncAudioIcons(true); }
-        return;
-      } catch (err) {
-        console.warn('YT fallback', err);
-        // cae a mp3 local
-      }
-    }
-
-    // fallback / normal MP3 toggle
-    if (audio) {
-      if (audio.paused) { audio.play().catch(()=>{}); syncAudioIcons(true); }
-      else { audio.pause(); syncAudioIcons(false); }
+  toggle.addEventListener('click', ()=>{
+    if(audio.paused){
+      audio.play().catch(err=>console.warn('Autoplay blocked',err));
+      syncAudioIcons(true);
+    } else {
+      audio.pause();
+      syncAudioIcons(false);
     }
   });
 
-  // si mp3 se reproduce desde otro control, pausar YT
-  if (audio) {
-    audio.addEventListener('play', ()=> { try { if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState()===YT.PlayerState.PLAYING) ytPlayer.pauseVideo(); } catch(e){}; syncAudioIcons(true); });
-    audio.addEventListener('pause', ()=> syncAudioIcons(false));
-    audio.addEventListener('ended', ()=> syncAudioIcons(false));
-  }
+  audio.addEventListener('play', ()=> syncAudioIcons(true));
+  audio.addEventListener('pause', ()=> syncAudioIcons(false));
+  audio.addEventListener('ended', ()=> syncAudioIcons(false));
 }
-
-function syncAudioIcons(isPlaying) {
+function syncAudioIcons(isPlaying){
   const playI = document.getElementById('audioPlay');
   const pauseI = document.getElementById('audioPause');
   const toggle = document.getElementById('audioToggle');
-  if (!playI || !pauseI) return;
-  if (isPlaying) { playI.classList.add('hidden'); pauseI.classList.remove('hidden'); toggle.setAttribute('aria-pressed','true'); }
+  if(!playI||!pauseI) return;
+  if(isPlaying){ playI.classList.add('hidden'); pauseI.classList.remove('hidden'); toggle.setAttribute('aria-pressed','true'); }
   else { playI.classList.remove('hidden'); pauseI.classList.add('hidden'); toggle.setAttribute('aria-pressed','false'); }
 }
 
-/* ===== Form modal or mailto fallback ===== */
-function openFormModal(url) {
-  const iframe = document.getElementById('formIframe');
-  if (iframe) iframe.src = url;
-  // intentar modal; si falla abrir en nueva pestaña
-  try { $('#formModal').modal('show'); } catch(e) { window.open(url,'_blank'); }
+/* ===== RSVP helpers ===== */
+function initRsvp(){
+  const openMain = document.getElementById('openFormBtnMain');
+  if(openMain) openMain.addEventListener('click', ()=> openFormModal(GOOGLE_FORM_EMBED_URL));
+
+  document.querySelectorAll('.chip').forEach(ch=>{
+    ch.addEventListener('click', ()=> {
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      ch.classList.add('active');
+    });
+  });
+
+  const miniSubmit = document.getElementById('miniSubmit');
+  const miniClear = document.getElementById('miniClear');
+  if(miniSubmit){
+    miniSubmit.addEventListener('click', ()=>{
+      const name = document.getElementById('miniName').value || '---';
+      const adults = document.getElementById('miniAdults').value || '0';
+      const kids = document.getElementById('miniKids').value || '0';
+      const chip = document.querySelector('.chip.active');
+      const restr = chip ? chip.dataset.val : 'Ninguna';
+      const body = encodeURIComponent(`Hola,%0A%0AConfirmo mi asistencia al cumple de ${KID_NAME}.%0A%0ANombre: ${name}%0AAdultos: ${adults}%0APeques: ${kids}%0ARestricciones: ${restr}%0A%0AMuchas gracias!`);
+      window.location.href = `mailto:${OWNER_EMAIL}?subject=RSVP%20-%20${encodeURIComponent(KID_NAME)}&body=${body}`;
+      document.getElementById('miniFeedback').style.display = 'block';
+      if(confettiEngine) confettiEngine.fire(60);
+    });
+  }
+  if(miniClear){
+    miniClear.addEventListener('click', ()=>{
+      document.getElementById('miniName').value='';
+      document.getElementById('miniAdults').value='';
+      document.getElementById('miniKids').value='';
+      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      document.getElementById('miniFeedback').style.display='none';
+    });
+  }
+
+  // share + copy
+  const shareWhats = document.getElementById('shareWhats');
+  const copyLinkBtn = document.getElementById('copyLinkBtn');
+  if(shareWhats){
+    const text = encodeURIComponent(`Invitación al cumple de ${KID_NAME}! 🎉 — ${location.href}`);
+    shareWhats.href = `https://wa.me/?text=${text}`;
+  }
+  if(copyLinkBtn){
+    copyLinkBtn.addEventListener('click', async ()=>{
+      try {
+        await navigator.clipboard.writeText(location.href);
+        const notice = document.getElementById('copyNotice'); if(notice){ notice.style.display='block'; setTimeout(()=> notice.style.display='none',2600); }
+      } catch(e){ alert('No se pudo copiar el enlace: ' + e); }
+    });
+  }
+
+  const confettiBtn = document.getElementById('confettiBtn');
+  if(confettiBtn){
+    confettiBtn.addEventListener('click', ()=>{
+      if(confettiEngine) confettiEngine.fire(120);
+      const msg = document.getElementById('afterRsvpMsg');
+      if(msg){ msg.style.display='block'; setTimeout(()=> msg.style.display='none',3800); }
+    });
+  }
 }
 
-function fallbackMail() {
-  const body = encodeURIComponent(`Hola,%0A%0AMi nombre es:%0AConfirmo mi asistencia: Sí/No%0ACantidad adultos:%0ACantidad peques:%0AEdades:%0ARestricciones alimentarias:%0AMensaje:%0A`);
-  window.location.href = `mailto:${OWNER_EMAIL}?subject=RSVP%20-%20${encodeURIComponent(KID_NAME)}&body=${body}`;
+/* ===== modal form or mailto fallback ===== */
+function openFormModal(url){
+  const iframe = document.getElementById('formIframe');
+  if(iframe) iframe.src = url;
+  try { $('#formModal').modal('show'); }
+  catch(e){ window.open(url,'_blank'); }
+}
+
+/* ===== Confetti engine (simple, no dependencias) ===== */
+function createConfettiEngine(canvasId){
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return null;
+  const ctx = canvas.getContext('2d');
+  let w=0,h=0,particles=[];
+  const resize = ()=>{ w=canvas.width = window.innerWidth; h=canvas.height = window.innerHeight; };
+  window.addEventListener('resize', resize); resize();
+
+  function newParticle(){
+    return {
+      x: Math.random()*w,
+      y: -10 - Math.random()*100,
+      vx: (Math.random()-0.5)*6,
+      vy: 2 + Math.random()*4,
+      size: 6 + Math.random()*8,
+      rot: Math.random()*360,
+      vrot: (Math.random()-0.5)*10,
+      color: ['#ffd6e8','#ffd9f0','#f6d8ff','#fff0f6','#ffd6ea'][Math.floor(Math.random()*5)]
+    };
+  }
+
+  let raf=0;
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach((p, i)=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.06; // gravity
+      p.rot += p.vrot;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot * Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+      ctx.restore();
+    });
+    particles = particles.filter(p => p.y < h + 60);
+    if(particles.length>0) raf = requestAnimationFrame(frame);
+    else { cancelAnimationFrame(raf); canvas.style.display='none'; }
+  }
+
+  return {
+    fire(count=80){
+      for(let i=0;i<count;i++) particles.push(newParticle());
+      canvas.style.display='block';
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(frame);
+    }
+  };
 }
