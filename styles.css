@@ -1,7 +1,7 @@
 /* ---------- Variables ---------- */
 :root{
   --pink-50:#fff4f8;
-  --accent1:#ffb6d5;
+  --accent1:#ef1f76;
   --accent2:#d8c0ee;
   --rose-300:#ffb6d5;
   --lilac:#d8c0ee;
@@ -12,7 +12,6 @@
   --max-width:980px;
   --count-border:#ffd6e8;
 }
-
 /* Base */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -30,17 +29,26 @@ body{
 
 /* portada */
 .portada{border-radius:0; overflow:hidden; box-shadow:var(--shadow)}
-.portada-media{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.92) saturate(1.02);transform:scale(1.02);pointer-events:none;z-index:0}
+.portada-media{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.86) saturate(1.05);transform:scale(1.02);pointer-events:none;z-index:0}
 .portada-inner{position:relative;z-index:2;text-align:center;padding:20px}
 #mainTitle{font-family:"Playfair Display",serif;font-size:34px;margin:6px 0;font-weight:700;color:var(--accent1); text-shadow: 0 6px 18px rgba(255,158,207,0.10);}
 
 /* circular photo Delfi (borde blanco finito) */
 .delfi-wrap{width:260px;height:260px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:10px auto}
-.delfi-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:6px solid #ffffff;box-shadow:0 40px 110px rgba(193,124,160,0.16);transition:transform .35s ease}
+.delfi-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;border:6px solid #ffffff;box-shadow:0 30px 90px rgba(193,124,160,0.12);transition:transform .35s ease}
 .delfi-wrap img:hover{transform:translateY(-6px)}
 
-/* banner */
-.banner-date{display:inline-flex;gap:12px;align-items:center;margin-top:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;padding:10px 14px;border-radius:999px;font-weight:800;box-shadow:0 14px 36px rgba(203,125,167,0.12)}
+/* portada message */
+.portada-message .lead { background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,250,253,0.9)); padding:12px 18px; border-radius:12px; box-shadow:0 10px 36px rgba(193,124,160,0.06); }
+.portada-message .highlight-time .time { padding:4px 8px; border-radius:8px; background: linear-gradient(90deg, rgba(255,182,213,0.18), rgba(216,192,238,0.12)); font-weight:800; }
+.portada-message .highlight-place .place { padding:4px 8px; border-radius:8px; background: linear-gradient(90deg, rgba(216,192,238,0.14), rgba(255,240,250,0.06)); font-weight:800; text-decoration:underline; text-decoration-color: rgba(255,182,213,0.25); }
+
+/* banner (ahora más visible) */
+.banner-date { display: inline-flex; gap: 12px; align-items: center; margin-top: 18px; background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,250,253,0.98)); padding: 12px 16px; border-radius: 999px; font-weight: 800; box-shadow: 0 20px 44px rgba(203,125,167,0.10); border: 1px solid rgba(255,182,213,0.45); }
+.banner-date .date-left { color: var(--lilac); font-weight:700; padding-right:8px; font-size:1rem; }
+.banner-date .date-right { color: var(--accent1); font-weight:800; padding-left:8px; font-size:1rem; }
+.banner-date .date-right .time { background: linear-gradient(90deg, rgba(255,182,213,0.22), rgba(216,192,238,0.14)); padding:6px 10px; border-radius:10px; }
+.banner-date .date-right .place { display:inline-block; margin-left:8px; font-weight:800; text-decoration:underline; text-decoration-color: rgba(255,182,213,0.25); }
 
 /* titles */
 .section-title{font-family:"Playfair Display",serif;font-size:22px;margin:0}
@@ -76,6 +84,7 @@ body{
 .thanks-card{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px}
 .thanks-photo{width:160px;height:160px;object-fit:cover;border-radius:50%;border:6px solid #ffffff;box-shadow:0 30px 90px rgba(193,124,160,0.12)}
 .btn-cta{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;border-radius:999px;padding:10px 14px;font-weight:700;box-shadow:0 12px 36px rgba(203,125,167,0.12)}
+
 /* === FOOTER FINAL === */
 .footer-full {
   width: 100%;
@@ -83,23 +92,15 @@ body{
   text-align: center;
   padding: 24px 12px;
   border-top: 1px solid rgba(255, 182, 213, 0.4);
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  position: relative;
+  margin-top: 60px; /* más espacio para empujarlo hacia abajo */
 }
 
-.footer-full p {
-  margin: 0;
-  font-weight: 600;
-  color: var(--text);
-}
+/* Aseguramos que la sección final deje espacio para mostrar footer más abajo */
+.seccion.rsvp-gracias { padding-bottom: 120px; }
 
-.footer-full small {
-  display: block;
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 13px;
-}
+.footer-full p { margin: 0; font-weight: 600; color: var(--text); }
+.footer-full small { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; }
 
 /* audio toggle */
 .audio-toggle{position:fixed;right:18px;bottom:18px;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:14000;background:linear-gradient(180deg,#fff,#fff8fb);box-shadow:0 18px 48px rgba(193,124,160,0.12)}
@@ -114,3 +115,21 @@ body{
 /* responsive */
 @media (max-width:880px){.delfi-wrap{width:200px;height:200px}.party-icon-wrap{width:110px;height:110px}}
 @media (max-width:420px){.delfi-wrap{width:160px;height:160px} #countdown{gap:8px} .portada-inner{padding:12px}}
+
+.portada-inner h1 { opacity: 0; transform: translateY(-20px); transition: opacity 0.5s, transform 0.5s; }
+.portada-inner.visible h1 { opacity: 1; transform: translateY(0); }
+
+/* foco visible (accesible) */
+a:focus, button:focus, .btn:focus { outline: 3px solid rgba(255,182,213,0.35); outline-offset: 3px; }
+
+/* hacer icono de audio más rosado si no querés cambiar assets */
+.audio-toggle img { transition: filter .2s ease; filter: saturate(1.2) contrast(1.02) hue-rotate(320deg) brightness(0.98); }
+
+/* minimizar grandes sombras en pantallas pequeñas */
+@media (max-width: 420px) {
+  .delfi-wrap img { box-shadow: 0 18px 50px rgba(193,124,160,0.12); }
+  .portada { box-shadow: 0 10px 28px rgba(193,124,160,0.08); }
+}
+
+/* small: asegurarse que countdown sea legible */
+.cd-unit .num { font-variant-numeric: tabular-nums; }
