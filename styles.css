@@ -12,11 +12,6 @@
   --count-border: #ffd6e8;
 }
 
-/* Base */
-* {
-  box-sizing: border-box
-}
-
 html {
   scroll-behavior: smooth
 }
@@ -33,51 +28,6 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 18px
-}
-
-/* secciones */
-.seccion {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 28px;
-  position: relative
-}
-
-/* portada */
-.portada {
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: var(--shadow)
-}
-
-.portada-media {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.86) saturate(1.05);
-  transform: scale(1.02);
-  pointer-events: none;
-  z-index: 0
-}
-
-.portada-inner {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 20px
-}
-
-#mainTitle {
-  font-family: "Playfair Display", serif;
-  font-size: 34px;
-  margin: 6px 0;
-  font-weight: 700;
-  color: var(--accent1);
-  text-shadow: 0 6px 18px rgba(255, 158, 207, 0.10);
 }
 
 /* circular photo Delfi  */
@@ -110,7 +60,6 @@ body {
 .portada-message .lead {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 253, 0.9));
   padding: 12px 18px;
-  opacity: 60%;
   border-radius: 12px;
   box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
 }
@@ -199,14 +148,6 @@ body {
   padding: 18px;
   opacity: 60%;
 }
-
-/*#countdown {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap
-}*/
 
 .cd-unit {
   min-width: 80px;
@@ -487,17 +428,6 @@ body {
   }
 }
 
-.portada-inner h1 {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.5s, transform 0.5s;
-}
-
-.portada-inner.visible h1 {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* foco visible (accesible) */
 a:focus,
 button:focus,
@@ -696,18 +626,6 @@ body {
   }
 }
 
-/* --- Ajustes Hero (portada) --- */
-.hero-photo img {
-  border-radius: 50%;
-  opacity: 0.85;
-  /* suaviza la imagen */
-  transition: opacity 0.3s ease;
-}
-
-.hero-photo img:hover {
-  opacity: 1;
-}
-
 /* Alineación del texto de la portada */
 .hero-content {
   display: flex;
@@ -898,11 +816,12 @@ body {
 
 #mainTitle {
   font-family: "Playfair Display", serif;
-  font-size: 34px;
+  font-size: 38px;
   margin: 6px 0;
   font-weight: 700;
-  color: var(--accent1);
-  text-shadow: 0 6px 18px rgba(255, 158, 207, 0.10);
+  color: #e713f6;
+  -webkit-text-stroke: 1px rgb(255, 255, 255);
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
 }
 
 /* circular photo Delfi */
@@ -1238,18 +1157,6 @@ body {
   }
 }
 
-/* hero title animation */
-.portada-inner h1 {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.5s, transform 0.5s;
-}
-
-.portada-inner.visible h1 {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* focus visible */
 a:focus,
 button:focus,
@@ -1305,7 +1212,7 @@ button:focus,
     font-weight: 300px;
   }
 
-  .cd-unit{
+  .cd-unit {
     min-width: 30px;
   }
 
@@ -1313,5 +1220,204 @@ button:focus,
     font-size: 18px;
     font-weight: 500;
     color: var(--text);
+  }
 }
+
+/* ---------- PORTADA: layout + responsive hero ---------- */
+
+/* aseguramos que la sección ocupe toda la pantalla */
+.portada {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+/* fondo: .portada-media (se asigna background-image desde JS o inline) */
+.portada-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  pointer-events: none;
+  z-index: 0;
+  filter: brightness(0.65) saturate(.98);
+}
+
+/* colocamos el contenido en la parte superior de la viewport */
+.portada-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /* importante: subir el contenido */
+  padding-top: 6vh;
+  /* espacio desde el top, relativo a la pantalla */
+  padding-bottom: 24px;
+  text-align: center;
+}
+
+/* Hero title responsive: se adapta con clamp */
+.hero-title {
+  font-family: "Playfair Display", serif;
+  color: #fff;
+  margin: 0;
+  line-height: 1.02;
+  font-size: clamp(20px, 5.5vw, 36px);
+  /* escala entre 20px y 36px */
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* nombre más destacado debajo o en la misma línea según diseño */
+.hero-name {
+  display: inline-block;
+  font-size: clamp(28px, 9vw, 48px);
+  /* escala entre 28px y 48px */
+  font-weight: 800;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(255, 182, 213, 0.06), rgba(216, 192, 238, 0.04));
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  color: #fff;
+}
+
+/* foto circular: más responsiva y con ligera transparencia */
+.delfi-wrap {
+  width: clamp(120px, 28vw, 260px);
+  height: clamp(120px, 28vw, 260px);
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 14px auto 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delfi-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 30px 90px rgba(193, 124, 160, 0.12);
+}
+
+.delfi-wrap img:hover {
+  transform: translateY(-6px);
+}
+
+/* caja de mensaje (rectángulo) */
+.portada-message .lead {
+  background: rgba(255, 255, 255, 0.82);
+  color: #5a3d4a;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
+  backdrop-filter: blur(6px);
+  max-width: 720px;
+  margin: 8px auto 0;
+  font-size: clamp(13px, 2.2vw, 16px);
+  line-height: 1.25;
+}
+
+/* ajustamos la flechita para móvil si teniendo fixed la tapa */
+.scroll-flecha {
+  z-index: 14150;
+  pointer-events: auto;
+  padding: 6px;
+  touch-action: manipulation;
+}
+
+/* --- Media queries finos --- */
+@media (max-width: 900px) {
+  .portada-inner {
+    padding-top: 4vh;
+  }
+
+  /* menos espacio en tablets */
+}
+
+@media (max-width: 420px) {
+
+  /* en celulares subimos todavía más el contenido (pegado al top) */
+  .portada-inner {
+    padding-top: 2.6vh;
+    align-items: center;
+  }
+
+  .hero-title {
+    font-size: clamp(18px, 6.2vw, 24px);
+  }
+
+  .hero-name {
+    font-size: clamp(20px, 10.8vw, 32px);
+    padding: 4px 8px;
+  }
+
+  .portada-message .lead {
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 14px;
+    max-width: 90%;
+  }
+
+  .scroll-flecha {
+    position: fixed !important;
+    bottom: 14px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
+
+/* Asegurar que ningún fixed (audio) tape el título en móviles */
+@media (max-width: 420px) {
+  .audio-toggle {
+    right: 14px;
+    bottom: 84px;
+  }
+
+  /* movemos audio arriba de la flecha */
+}
+
+.portada::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.10) 45%,
+    rgba(0, 0, 0, 0.18) 100%
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .portada-inner h1 {
+    position: relative;
+    top: -160px; 
+  }
+  #portadaText {
+    margin-top: 80px; 
+  }
+}
+
+/* --- efecto al pasar o tocar la foto de Delfi con rebote --- */
+.delfi-wrap img {
+  transition: transform 0.5s cubic-bezier(0.25, 1.25, 0.5, 1), box-shadow 0.4s ease;
+  cursor: pointer;
+  will-change: transform;
+}
+
+.delfi-wrap:hover img,
+.delfi-wrap:active img {
+  transform: scale(1.32);
+  box-shadow: 0 10px 22px rgba(255, 182, 193, 0.55);
 }
