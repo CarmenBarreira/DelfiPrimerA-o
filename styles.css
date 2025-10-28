@@ -56,13 +56,13 @@ body {
   transform: translateY(-6px)
 }
 
-/* portada message */
+/* portada message 
 .portada-message .lead {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 253, 0.9));
   padding: 12px 18px;
   border-radius: 12px;
   box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
-}
+}*/
 
 .portada-message .highlight-time .time {
   padding: 4px 8px;
@@ -819,7 +819,7 @@ body {
   font-size: 38px;
   margin: 6px 0;
   font-weight: 700;
-  color: #e713f6;
+  color: #f7a6c4;
   -webkit-text-stroke: 1px rgb(255, 255, 255);
   text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
 }
@@ -850,14 +850,14 @@ body {
   transform: translateY(-6px);
 }
 
-/* portada message */
+/* portada message 
 .portada-message .lead {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 253, 0.9));
   padding: 12px 18px;
   border-radius: 12px;
   box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
 }
-
+*/
 .portada-message .highlight-time .time {
   padding: 4px 8px;
   border-radius: 8px;
@@ -1304,7 +1304,7 @@ button:focus,
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  border: 6px solid rgba(255, 255, 255, 0.92);
+  border: 6px solid #f7a6c4;
   box-shadow: 0 30px 90px rgba(193, 124, 160, 0.12);
 }
 
@@ -1314,7 +1314,6 @@ button:focus,
 
 /* caja de mensaje (rectángulo) */
 .portada-message .lead {
-  background: rgba(255, 255, 255, 0.82);
   color: #5a3d4a;
   padding: 12px 16px;
   border-radius: 12px;
@@ -1420,4 +1419,45 @@ button:focus,
 .delfi-wrap:active img {
   transform: scale(1.32);
   box-shadow: 0 10px 22px rgba(255, 182, 193, 0.55);
+}
+
+
+
+
+
+
+
+
+
+.portada-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.5); /* leve capa blanca traslúcida */
+}
+
+/* Asegura que el texto esté por encima del filtro */
+.portada-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Títulos más visibles */
+.hero-title {
+  color: #ffffff;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+}
+
+.hero-name {
+  color: #f7a6c4;
+  font-size: 2.8rem;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Texto del párrafo */
+#portadaText {
+  color: #fff;
+  font-weight: 500;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
