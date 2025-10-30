@@ -23,10 +23,22 @@ const EVENT_TIMEZONE = "America/Montevideo";
 
 let confettiEngine = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.info('Inicializando invitación');
+document.querySelectorAll('.scroll-flecha').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) window.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
+  });
+});
 
-  // portada background & images
+document.addEventListener('DOMContentLoaded', () => {
+
+  document.querySelectorAll('.lazy-bg').forEach(el => {
+    const bg = el.dataset.bg;
+    if (bg) el.style.backgroundImage = `url(${bg})`;
+  });
+
+
   const portadaMedia = document.querySelector('.portada-media');
   if (portadaMedia) portadaMedia.style.backgroundImage = `url('${PORTADA_IMAGE}')`;
   const delfi = document.getElementById('delfiPhoto'); if (delfi) delfi.src = PORTADA_IMAGE;
@@ -313,3 +325,4 @@ function createConfettiEngine(canvasId) {
 
   return { fire(count = 80) { for (let i = 0; i < count; i++) particles.push(newParticle()); canvas.style.display = 'block'; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); } };
 }
+

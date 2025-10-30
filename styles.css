@@ -608,7 +608,7 @@ button:focus,
   }
 
   .portada-message .lead {
-   /* padding: 10px 12px;*/
+    /* padding: 10px 12px;*/
     margin-top: 8px;
     font-size: 14px;
     max-width: 90%
@@ -868,6 +868,20 @@ button:focus,
   box-shadow: 0 12px 36px rgba(203, 125, 167, 0.12);
 }
 
+.carousel-caption p {
+  font-size: 1.2rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #444;
+  border-radius: 12px;
+  padding: 6px 12px;
+  display: inline-block;
+}
 
-
+.rsvp-gracias .section-title {
+  font-size: 25px;
+  font-family: "Playfair Display", serif;
+  color: var(--accent1);
+  margin-bottom: 6px;
+  font-weight: 800;
+}
 
