@@ -12,15 +12,20 @@
   --count-border: #ffd6e8;
 }
 
+* {
+  box-sizing: border-box
+}
+
 html {
-  scroll-behavior: smooth
+  scroll-behavior: smooth;
+  height: 100%
 }
 
 body {
   margin: 0;
+  min-height: 100%;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   background: linear-gradient(135deg, #ffeaf2 0%, #ffd6eb 50%, #fff5fb 100%);
-  min-height: 100vh;
   color: var(--text);
 }
 
@@ -30,16 +35,233 @@ body {
   padding: 0 18px
 }
 
-/* circular photo Delfi  */
-.delfi-wrap {
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
+/* ===========================
+     LAYOUT (site root / main / sections)
+     =========================== */
+.site-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column
+}
+
+.page-main {
+  flex: 1 0 auto
+}
+
+.seccion {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 28px;
+  position: relative;
+}
+
+/* ===========================
+     PORTADA / HERO
+     =========================== */
+.portada {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+}
+
+.portada-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  filter: brightness(0.85);
+}
+
+/* ---- Texto principal ---- */
+.hero-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2.8rem, 6vw, 4rem);
+  color: #fff;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.5rem;
+  margin-top: -3vh;
+  /* Subimos el texto */
+}
+
+.hero-name {
+  display: block;
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 7vw, 5rem);
+  color: #fff;
+  text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+/* ---- Foto circular ---- */
+.delfi-wrap {
+  margin: 1rem auto;
+  width: clamp(180px, 28vw, 280px);
+  /* más grande */
+  aspect-ratio: 1/1;
+  border-radius: 50%;
   overflow: hidden;
-  margin: 10px auto
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s ease;
+}
+
+.delfi-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  opacity: 0.95;
+}
+
+.delfi-wrap:hover img {
+  transform: scale(1.1);
+}
+
+/* ---- Texto inferior con fondo semi-transparente ---- */
+.portada-message {
+  position: relative;
+  margin-top: 2rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  /* transparencia */
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+#portadaText {
+  color: #333;
+  line-height: 1.4;
+  font-size: 1rem;
+}
+
+/* ---- Flecha scroll ---- */
+.scroll-flecha {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  animation: bounce 1.8s infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+
+  50% {
+    transform: translate(-50%, -8px);
+  }
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 768px) {
+  .hero-title {
+    margin-top: -6vh;
+    /* más arriba en celulares */
+  }
+
+  .delfi-wrap {
+    width: clamp(160px, 45vw, 220px);
+  }
+
+  .portada-message {
+    margin-top: 2.5rem;
+    padding: 1rem;
+  }
+}
+
+
+.portada::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.08) 45%, rgba(0, 0, 0, 0.14) 100%);
+  pointer-events: none;
+}
+
+.portada-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 6vh;
+  padding-bottom: 24px;
+  text-align: center;
+}
+
+.hero-title {
+  margin: 0;
+  line-height: 1.02;
+  font-family: 'Pacifico', cursive;
+  font-size: 3.5rem;
+  color: #fff;
+  text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.hero-name {
+  display: inline-block;
+  font-size: clamp(28px, 9vw, 48px);
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(255, 182, 213, 0.06), rgba(216, 192, 238, 0.04));
+  color: #f7a6c4;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+
+}
+
+/*
+.portada-message .lead {
+  color: #5a3d4a;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  max-width: 720px;
+  margin: 8px auto 0;
+  font-size: clamp(13px, 2.2vw, 16px);
+  line-height: 1.25;
+}*/
+
+#portadaText {
+  /* margin-top: 13%;*/
+  font-weight: 500;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.18)
+}
+
+/* ===========================
+     FOTO CIRCULAR (Delfi)
+     =========================== */
+.delfi-wrap {
+  width: clamp(160px, 28vw, 260px);
+  height: clamp(160px, 28vw, 260px);
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 14px auto 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .delfi-wrap img {
@@ -47,93 +269,25 @@ body {
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  border: 6px solid #ffffff;
+  border: 6px solid #f7a6c4;
   box-shadow: 0 30px 90px rgba(193, 124, 160, 0.12);
-  transition: transform .35s ease
+  transition: transform .5s cubic-bezier(.25, 1.25, .5, 1), box-shadow .4s ease;
+  cursor: pointer;
+  will-change: transform;
+
 }
 
-.delfi-wrap img:hover {
-  transform: translateY(-6px)
+/* hover / touch (agrandar con rebote) */
+.delfi-wrap:hover img,
+.delfi-wrap:active img,
+.delfi-wrap:focus img {
+  transform: scale(1.32);
+  box-shadow: 0 10px 22px rgba(255, 182, 193, 0.55);
 }
 
-/* portada message 
-.portada-message .lead {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 253, 0.9));
-  padding: 12px 18px;
-  border-radius: 12px;
-  box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
-}*/
-
-.portada-message .highlight-time .time {
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(255, 182, 213, 0.18), rgba(216, 192, 238, 0.12));
-  font-weight: 800;
-}
-
-.portada-message .highlight-place .place {
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(216, 192, 238, 0.14), rgba(255, 240, 250, 0.06));
-  font-weight: 800;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 182, 213, 0.25);
-}
-
-/* banner */
-.banner-date {
-  display: inline-flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 18px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 250, 253, 0.98));
-  padding: 12px 16px;
-  border-radius: 999px;
-  font-weight: 800;
-  box-shadow: 0 20px 44px rgba(203, 125, 167, 0.10);
-  border: 1px solid rgba(255, 182, 213, 0.45);
-}
-
-.banner-date .date-left {
-  color: var(--lilac);
-  font-weight: 700;
-  padding-right: 8px;
-  font-size: 1rem;
-}
-
-.banner-date .date-right {
-  color: var(--accent1);
-  font-weight: 800;
-  padding-left: 8px;
-  font-size: 1rem;
-}
-
-.banner-date .date-right .time {
-  background: linear-gradient(90deg, rgba(255, 182, 213, 0.22), rgba(216, 192, 238, 0.14));
-  padding: 6px 10px;
-  border-radius: 10px;
-}
-
-.banner-date .date-right .place {
-  display: inline-block;
-  margin-left: 8px;
-  font-weight: 800;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 182, 213, 0.25);
-}
-
-/* titles */
-.section-title {
-  font-family: "Playfair Display", serif;
-  font-size: 22px;
-  margin: 0
-}
-
-.title-fiesta {
-  color: var(--accent1);
-}
-
-/* countdown */
+/* ===========================
+     COUNTDOWN
+     =========================== */
 .countdown-card {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 253, 0.96));
   border-radius: 14px;
@@ -146,7 +300,15 @@ body {
   height: 100%;
   min-height: 220px;
   padding: 18px;
-  opacity: 60%;
+  opacity: 0.98;
+}
+
+#countdown {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap
 }
 
 .cd-unit {
@@ -176,47 +338,9 @@ body {
   margin-top: 6px
 }
 
-/* party icon animation */
-.party-icon-wrap {
-  width: 140px;
-  height: 140px;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #fff, #fff9fb);
-  box-shadow: 0 18px 50px rgba(203, 125, 167, 0.06)
-}
-
-.party-icon {
-  width: 84px;
-  height: 84px;
-  animation: party-move 3000ms cubic-bezier(.22, .9, .3, 1) infinite
-}
-
-@keyframes party-move {
-  0% {
-    transform: translateY(0)
-  }
-
-  25% {
-    transform: translateY(-12px)
-  }
-
-  50% {
-    transform: translateY(0)
-  }
-
-  75% {
-    transform: translateY(-8px)
-  }
-
-  100% {
-    transform: translateY(0)
-  }
-}
-
-/* gallery - carousel */
+/* ===========================
+     GALERÍA / THUMBS
+     =========================== */
 #galleryCarousel .carousel-inner .carousel-item img {
   max-height: calc(100vh - 340px);
   object-fit: cover;
@@ -234,7 +358,7 @@ body {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.08));
   padding: 8px 12px;
   border-radius: 8px;
-  font-size: 0.95rem
+  font-size: .95rem
 }
 
 #galleryThumbs {
@@ -267,756 +391,9 @@ body {
   box-shadow: 0 14px 36px rgba(193, 124, 160, 0.12)
 }
 
-/* RSVP + Gracias styles */
-.rsvp-gracias .card {
-  border-radius: 14px;
-  box-shadow: 0 18px 48px rgba(193, 124, 160, 0.06);
-  background: linear-gradient(180deg, #fff, #fffafc)
-}
-
-.fallback-card {
-  border: 1px dashed rgba(203, 125, 167, 0.14)
-}
-
-.chip {
-  background: transparent;
-  border: 1px solid rgba(203, 125, 167, 0.12);
-  color: var(--text);
-  padding: 6px 10px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: 0.9rem
-}
-
-.chip.active {
-  background: linear-gradient(135deg, var(--accent1), var(--accent2));
-  color: #fff;
-  border-color: transparent
-}
-
-.thanks-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 320px
-}
-
-.thanks-photo {
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 6px solid #ffffff;
-  box-shadow: 0 30px 90px rgba(193, 124, 160, 0.12)
-}
-
-.btn-cta {
-  background: linear-gradient(135deg, var(--accent1), var(--accent2));
-  color: #fff;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 700;
-  box-shadow: 0 12px 36px rgba(203, 125, 167, 0.12)
-}
-
-/* === FOOTER FINAL === */
-.footer-full {
-  width: 100%;
-  background: linear-gradient(90deg, #ffe4f2 0%, #ffd8ec 100%);
-  text-align: center;
-  padding: 24px 12px;
-  border-top: 1px solid rgba(255, 182, 213, 0.4);
-  position: relative;
-  margin-top: 60px;
-  /* más espacio para empujarlo hacia abajo */
-}
-
-/* Aseguramos que la sección final deje espacio para mostrar footer más abajo */
-.seccion.rsvp-gracias {
-  padding-bottom: 120px;
-}
-
-.footer-full p {
-  margin: 0;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.footer-full small {
-  display: block;
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-/* audio toggle */
-.audio-toggle {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 14000;
-  background: linear-gradient(180deg, #fff, #fff8fb);
-  box-shadow: 0 18px 48px rgba(193, 124, 160, 0.12)
-}
-
-.audio-toggle img {
-  width: 36px;
-  height: 36px
-}
-
-.hidden {
-  display: none
-}
-
-/* chevron scroll button */
-.scroll-flecha {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #fff, #fff8fb);
-  box-shadow: 0 12px 30px rgba(193, 124, 160, 0.08);
-  text-decoration: none;
-  z-index: 12001;
-  transition: transform .18s ease, box-shadow .18s ease;
-  cursor: pointer
-}
-
-.scroll-flecha:hover {
-  transform: translateX(-50%) translateY(-6px);
-  box-shadow: 0 20px 44px rgba(193, 124, 160, 0.14)
-}
-
-.scroll-flecha svg polyline {
-  filter: drop-shadow(0 4px 8px rgba(255, 186, 209, 0.15))
-}
-
-/* responsive */
-@media (max-width:880px) {
-  .delfi-wrap {
-    width: 200px;
-    height: 200px
-  }
-
-  .party-icon-wrap {
-    width: 110px;
-    height: 110px
-  }
-}
-
-@media (max-width:420px) {
-  .delfi-wrap {
-    width: 120px;
-    height: 120px
-  }
-
-  .portada-inner {
-    padding: 8px
-  }
-}
-
-/* foco visible (accesible) */
-a:focus,
-button:focus,
-.btn:focus {
-  outline: 3px solid rgba(255, 182, 213, 0.35);
-  outline-offset: 3px;
-}
-
-/* hacer icono de audio más rosado si no querés cambiar assets */
-.audio-toggle img {
-  transition: filter .2s ease;
-  filter: saturate(1.2) contrast(1.02) hue-rotate(320deg) brightness(0.98);
-}
-
-/* minimizar grandes sombras en pantallas pequeñas */
-@media (max-width: 420px) {
-  .delfi-wrap img {
-    box-shadow: 0 18px 50px rgba(193, 124, 160, 0.12);
-  }
-
-  .portada {
-    box-shadow: 0 10px 28px rgba(193, 124, 160, 0.08);
-  }
-}
-
-/* small: asegurarse que countdown sea legible */
-.cd-unit .num {
-  font-variant-numeric: tabular-nums;
-}
-
-
-/* ---------- Alineación icono de fiesta + título (desktop) ---------- */
-.party-row {
-  display: flex;
-  align-items: center;
-  /* mantiene icono y textos centrados verticalmente */
-  justify-content: center;
-  /* centrado horizontal del conjunto */
-  gap: 20px;
-  flex-wrap: wrap;
-  text-align: left;
-  margin-bottom: 8px;
-}
-
-/* icono un poco más grande y sin margin extra */
-.party-row .party-icon-wrap {
-  width: 110px;
-  height: 110px;
-  flex: 0 0 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  background: linear-gradient(180deg, #fff, #fff9fb);
-  border-radius: 999px;
-  box-shadow: 0 18px 50px rgba(203, 125, 167, 0.06);
-}
-
-/* asegurar tamaño dentro */
-.party-row .party-icon {
-  width: 72px;
-  height: 72px;
-}
-
-/* texto junto al icono */
-.party-row .party-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  max-width: 740px;
-  /* evita que el título quede demasiado ancho */
-}
-
-/* jerarquía de títulos */
-.party-row .title-fiesta {
-  font-family: "Playfair Display", serif;
-  font-size: 30px;
-  margin: 0;
-  color: var(--accent1);
-  font-weight: 800;
-}
-
-.party-row .section-title {
-  font-family: "Playfair Display", serif;
-  font-size: 22px;
-  margin: 0;
-  color: var(--text);
-  line-height: 1.05;
-}
-
-
-/* ---------- Responsive: en móviles apilar y centrar ---------- */
-@media (max-width: 767.98px) {
-  .party-row {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 10px;
-  }
-
-  .party-row .party-text {
-    align-items: center;
-  }
-
-  .party-row .party-icon-wrap {
-    width: 96px;
-    height: 96px;
-    flex: 0 0 96px;
-  }
-
-  .party-row .party-icon {
-    width: 60px;
-    height: 60px;
-  }
-
-  .party-row .section-title {
-    font-size: 20px;
-  }
-}
-
-#galTitle {
-  font-size: 30px;
-  color: #ef1f76;
-  gap: 20px;
-  text-transform: capitalize;
-}
-
-/* --- Layout general para empujar footer al final --- */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* site-root envuelve todo y hace layout en columna */
-.site-root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* main que contiene las secciones crece para ocupar espacio disponible */
-.page-main {
-  flex: 1 0 auto;
-  /* ocupa el espacio restante empujando footer hacia abajo */
-}
-
-/* footer ocupa su lugar y no se superpone al contenido */
-.footer-full {
-  flex-shrink: 0;
-  background: linear-gradient(90deg, #ffe4f2 0%, #ffd8ec 100%);
-  text-align: center;
-  padding: 24px 12px;
-  border-top: 1px solid rgba(255, 182, 213, 0.4);
-}
-
-/* Estilos para la cabecera de RSVP (título arriba con buen espacio) */
-.rsvp-header .section-title {
-  font-size: 26px;
-  font-family: "Playfair Display", serif;
-  color: var(--accent1);
-  margin-bottom: 6px;
-  font-weight: 800;
-}
-
-.rsvp-header p {
-  color: var(--muted);
-  margin-bottom: 14px;
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Ajuste del contenedor de la tarjeta gracias para que no empuje demasiado en pantallas pequeñas */
-.thanks-card {
-  padding: 22px;
-  border-radius: 14px;
-}
-
-/* Más espacio inferior en la sección RSVP para que el footer no quede pegado */
-.rsvp-gracias {
-  padding-bottom: 80px;
-}
-
-/* Responsive: asegurar que en pantallas pequeñas el orden se vea lógico (titulo arriba, form abajo) */
-@media (max-width: 767.98px) {
-  .rsvp-gracias .row {
-    flex-direction: column-reverse;
-  }
-
-  /* muestra tarjeta encima si preferís, cambiá a column si querés mantener orden */
-  .rsvp-header .section-title {
-    font-size: 22px;
-  }
-}
-
-/* Alineación del texto de la portada */
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.hero-message {
-  margin-top: 10px;
-  max-width: 480px;
-}
-
-/* --- Flechitas de navegación entre secciones --- */
-.nav-arrow {
-  z-index: 20 !important;
-  pointer-events: auto !important;
-  position: absolute;
-}
-
-.nav-arrow svg {
-  width: 36px;
-  height: 36px;
-}
-
-@media (max-width: 767.98px) {
-  .nav-arrow {
-    bottom: 20px;
-  }
-}
-
-/* --- Confirmar asistencia --- */
-.rsvp-gracias {
-  padding: 90px 0 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.rsvp-gracias .row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-}
-
-.rsvp-gracias .col-left {
-  flex: 1 1 45%;
-  text-align: left;
-}
-
-.rsvp-gracias .col-left .section-title {
-  text-align: left;
-}
-
-.rsvp-gracias .col-right {
-  flex: 1 1 45%;
-  display: flex;
-  justify-content: center;
-}
-
-/* En móviles se apilan centrados */
-@media (max-width: 767.98px) {
-  .rsvp-gracias .row {
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .rsvp-gracias .col-left,
-  .rsvp-gracias .col-right {
-    flex: 1 1 100%;
-    text-align: center;
-  }
-
-  .rsvp-header .section-title {
-    text-align: center;
-    font-size: 22px;
-  }
-
-  .rsvp-gracias p {
-    text-align: center;
-  }
-}
-
-/* --- Footer --- */
-.footer-full {
-  padding-top: 40px;
-  padding-bottom: 20px;
-  /* menos espacio */
-}
-
-/* Asegurar que las flechas sean clicables en móvil */
-.scroll-flecha {
-  z-index: 14050 !important;
-  pointer-events: auto !important;
-}
-
-/* Si tenés elementos fixed que podrían superponer (audio toggle, etc), bajale el z-index */
-.audio-toggle {
-  z-index: 14060;
-}
-
-/* si la flecha se solapa, asegurate que el audio no la tape */
-
-/* Ajuste pequeño: make anchor hittable on mobile (aumenta la 'touch area') */
-.scroll-flecha {
-  padding: 6px;
-  touch-action: manipulation;
-}
-
-/* Si la sección destino tiene padding-top o un header fijo, hacemos pequeño offset con scroll-behavior JS (opcional) */
-
-/* ---------- Variables ---------- */
-:root {
-  --pink-50: #fff4f8;
-  --accent1: #ef1f76;
-  --accent2: #d8c0ee;
-  --rose-300: #ffb6d5;
-  --lilac: #d8c0ee;
-  --text: #3b2630;
-  --muted: #87646f;
-  --glass: rgba(255, 255, 255, 0.88);
-  --shadow: 0 18px 50px rgba(193, 124, 160, 0.12);
-  --max-width: 980px;
-  --count-border: #ffd6e8;
-}
-
-/* Base */
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  background: linear-gradient(135deg, #ffeaf2 0%, #ffd6eb 50%, #fff5fb 100%);
-  min-height: 100vh;
-  color: var(--text);
-}
-
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 18px;
-}
-
-/* secciones */
-.seccion {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 28px;
-  position: relative;
-}
-
-/* portada */
-.portada {
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-
-.portada-media {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.86) saturate(1.05);
-  transform: scale(1.02);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.portada-inner {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 20px;
-}
-
-#mainTitle {
-  font-family: "Playfair Display", serif;
-  font-size: 38px;
-  margin: 6px 0;
-  font-weight: 700;
-  color: #f7a6c4;
-  -webkit-text-stroke: 1px rgb(255, 255, 255);
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-}
-
-/* circular photo Delfi */
-.delfi-wrap {
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  margin: 10px auto;
-}
-
-.delfi-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 6px solid #ffffff;
-  box-shadow: 0 30px 90px rgba(193, 124, 160, 0.12);
-  transition: transform .35s ease;
-}
-
-.delfi-wrap img:hover {
-  transform: translateY(-6px);
-}
-
-/* portada message 
-.portada-message .lead {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 253, 0.9));
-  padding: 12px 18px;
-  border-radius: 12px;
-  box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
-}
-*/
-.portada-message .highlight-time .time {
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(255, 182, 213, 0.18), rgba(216, 192, 238, 0.12));
-  font-weight: 800;
-}
-
-.portada-message .highlight-place .place {
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(216, 192, 238, 0.14), rgba(255, 240, 250, 0.06));
-  font-weight: 800;
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 182, 213, 0.25);
-}
-
-/* banner */
-.banner-date {
-  display: inline-flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 18px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 250, 253, 0.98));
-  padding: 12px 16px;
-  border-radius: 999px;
-  font-weight: 800;
-  box-shadow: 0 20px 44px rgba(203, 125, 167, 0.10);
-  border: 1px solid rgba(255, 182, 213, 0.45);
-}
-
-.banner-date .date-left {
-  color: var(--lilac);
-  font-weight: 700;
-  padding-right: 8px;
-  font-size: 1rem;
-}
-
-.banner-date .date-right {
-  color: var(--accent1);
-  font-weight: 800;
-  padding-left: 8px;
-  font-size: 1rem;
-}
-
-/* titles */
-.section-title {
-  font-family: "Playfair Display", serif;
-  font-size: 22px;
-  margin: 0;
-}
-
-.title-fiesta {
-  color: var(--accent1);
-}
-
-/* countdown */
-.countdown-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 253, 0.96));
-  border-radius: 14px;
-  box-shadow: 0 12px 36px rgba(193, 124, 160, 0.06);
-  border: 1px solid rgba(203, 125, 167, 0.06);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  min-height: 220px;
-  padding: 18px;
-}
-
-#countdown {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.cd-unit {
-  min-width: 80px;
-  text-align: center;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #fff, #fff8fb);
-  box-shadow: 0 8px 20px rgba(58, 30, 46, 0.06);
-  transition: transform .18s;
-}
-
-.cd-unit.outlined {
-  border: 2px solid var(--count-border);
-  box-shadow: 0 10px 30px rgba(255, 182, 213, 0.07);
-}
-
-.num {
-  font-size: 28px;
-  font-weight: 900;
-  color: var(--text);
-}
-
-.lbl {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 6px;
-}
-
-.cd-sep {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-/* party icon */
-.party-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  text-align: left;
-  margin-bottom: 8px;
-}
-
-.party-row .party-icon-wrap {
-  width: 110px;
-  height: 110px;
-  flex: 0 0 110px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  background: linear-gradient(180deg, #fff, #fff9fb);
-  border-radius: 999px;
-  box-shadow: 0 18px 50px rgba(203, 125, 167, 0.06);
-}
-
-.party-row .party-icon {
-  width: 72px;
-  height: 72px;
-}
-
-/* gallery */
-#galleryCarousel .carousel-inner .carousel-item img {
-  max-height: calc(100vh - 340px);
-  object-fit: cover;
-  width: 100%;
-  border-radius: 14px;
-  box-shadow: 0 30px 90px rgba(193, 124, 160, 0.10);
-}
-
-#galleryThumbs {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  overflow-x: auto;
-  padding: 6px 4px;
-}
-
-/* RSVP + Gracias (estructura nueva: jiggly -> botón -> gracias) */
+/* ===========================
+     RSVP / CONFIRMACIÓN
+     =========================== */
 .rsvp-gracias {
   padding: 60px 18px;
   align-items: stretch;
@@ -1036,43 +413,57 @@ body {
   width: 240px;
   max-width: 60%;
   border-radius: 14px;
-  box-shadow: 0 24px 70px rgba(193, 124, 160, 0.10);
+  box-shadow: 0 24px 70px rgba(193, 124, 160, 0.10)
 }
 
 .rsvp-cta .btn {
-  min-width: 240px;
+  min-width: 240px
 }
 
-/* thanks card */
 .thanks-card {
   padding: 18px;
   border-radius: 14px;
-  box-shadow: 0 18px 48px rgba(193, 124, 160, 0.06);
   background: linear-gradient(180deg, #fff, #fffafc);
+  box-shadow: 0 18px 48px rgba(193, 124, 160, 0.06)
 }
 
-/* footer-inline (dentro de la sección) */
+/* footer-inline (opcional dentro de sección RSVP para evitar footer muy abajo) */
 .footer-inline {
   width: 100%;
   margin-top: 18px;
   padding-top: 18px;
   padding-bottom: 6px;
   border-top: 1px solid rgba(255, 182, 213, 0.12);
-  background: linear-gradient(180deg, rgba(255, 245, 250, 0.3), rgba(255, 245, 250, 0.08));
+  background: linear-gradient(180deg, rgba(255, 245, 250, 0.3), rgba(255, 245, 250, 0.08))
 }
 
 .footer-inline p {
   margin: 0;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text)
 }
 
 .footer-inline small {
   color: var(--muted);
   display: block;
-  margin-top: 6px;
+  margin-top: 6px
 }
 
+/* ===========================
+     FOOTER GLOBAL
+     =========================== */
+.footer-full {
+  width: 100%;
+  background: linear-gradient(90deg, #ffe4f2 0%, #ffd8ec 100%);
+  text-align: center;
+  padding: 24px 12px;
+  border-top: 1px solid rgba(255, 182, 213, 0.4);
+  flex-shrink: 0
+}
+
+/* ===========================
+     UTILIDADES / INTERACTIVAS
+     =========================== */
 /* audio toggle */
 .audio-toggle {
   position: fixed;
@@ -1086,19 +477,19 @@ body {
   justify-content: center;
   z-index: 14060;
   background: linear-gradient(180deg, #fff, #fff8fb);
-  box-shadow: 0 18px 48px rgba(193, 124, 160, 0.12);
+  box-shadow: 0 18px 48px rgba(193, 124, 160, 0.12)
 }
 
 .audio-toggle img {
   width: 36px;
-  height: 36px;
+  height: 36px
 }
 
 .hidden {
-  display: none;
+  display: none
 }
 
-/* chevron scroll button */
+/* flecha de scroll entre secciones */
 .scroll-flecha {
   position: absolute;
   left: 50%;
@@ -1113,7 +504,7 @@ body {
   background: linear-gradient(180deg, #fff, #fff8fb);
   box-shadow: 0 12px 30px rgba(193, 124, 160, 0.08);
   text-decoration: none;
-  z-index: 14050;
+  z-index: 14150;
   transition: transform .18s ease, box-shadow .18s ease;
   cursor: pointer;
   padding: 6px;
@@ -1122,131 +513,264 @@ body {
 
 .scroll-flecha:hover {
   transform: translateX(-50%) translateY(-6px);
-  box-shadow: 0 20px 44px rgba(193, 124, 160, 0.14);
+  box-shadow: 0 20px 44px rgba(193, 124, 160, 0.14)
 }
 
 .scroll-flecha svg polyline {
-  filter: drop-shadow(0 4px 8px rgba(255, 186, 209, 0.15));
+  filter: drop-shadow(0 4px 8px rgba(255, 186, 209, 0.15))
 }
 
-/* responsive */
-@media (max-width:880px) {
-  .delfi-wrap {
-    width: 200px;
-    height: 200px;
-  }
-
-  .party-icon-wrap {
-    width: 110px;
-    height: 110px;
-  }
-}
-
-@media (max-width:420px) {
-  .delfi-wrap {
-    width: 160px;
-    height: 160px;
-  }
-
-  #countdown {
-    gap: 4px;
-  }
-
-  .portada-inner {
-    padding: 10px;
-  }
-}
-
-/* focus visible */
+/* focus visible (accesible) */
 a:focus,
 button:focus,
 .btn:focus {
   outline: 3px solid rgba(255, 182, 213, 0.35);
-  outline-offset: 3px;
+  outline-offset: 3px
 }
 
-/* small: ensure countdown numeric style */
-.cd-unit .num {
-  font-variant-numeric: tabular-nums;
+/* ===========================
+     RESPONSIVE / ADJUSTS
+     =========================== */
+@media (max-width:900px) {
+  .portada-inner {
+    padding-top: 4vh
+  }
 }
 
-/* party responsive tweaks */
-@media (max-width: 767.98px) {
+@media (max-width:767.98px) {
   .party-row {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 10px;
+    gap: 10px
   }
 
   .party-row .party-icon-wrap {
     width: 96px;
     height: 96px;
-    flex: 0 0 96px;
+    flex: 0 0 96px
   }
 
   .party-row .party-icon {
     width: 60px;
-    height: 60px;
+    height: 60px
   }
 
   .section-title {
-    font-size: 20px;
+    font-size: 20px
   }
 
-  /* RSVP mobile: stacked, centered */
   .rsvp-inner {
-    gap: 12px;
+    gap: 12px
   }
 
   .rsvp-jiggly .img-jiggly {
-    width: 180px;
+    width: 180px
   }
 
   .rsvp-cta .btn {
-    min-width: 180px;
-  }
-
-  .cd-sep {
-    font-size: 4px;
-    font-weight: 300px;
+    min-width: 180px
   }
 
   .cd-unit {
-    min-width: 30px;
+    min-width: 30px
   }
 
   .num {
     font-size: 18px;
-    font-weight: 500;
-    color: var(--text);
+    font-weight: 500
+  }
+
+  .scroll-flecha {
+    position: fixed !important;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%) !important
   }
 }
 
-/* ---------- PORTADA: layout + responsive hero ---------- */
+@media (max-width:420px) {
+  .portada-inner {
+    padding-top: 2.6vh;
+    align-items: center;
+    margin-bottom: 61px;
+  }
 
-/* aseguramos que la sección ocupe toda la pantalla */
+  .hero-title {
+    margin-top: -165px;
+    font-size: 38px;
+    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-name {
+    font-size: 2.8rem;
+    padding: 4px 8px
+  }
+
+  .portada-message .lead {
+   /* padding: 10px 12px;*/
+    margin-top: 8px;
+    font-size: 14px;
+    max-width: 90%
+  }
+
+  .audio-toggle {
+    right: 14px;
+    bottom: 84px
+  }
+}
+
+/* ==== PORTADA ==== */
 .portada {
   position: relative;
-  width: 100%;
   min-height: 100vh;
+  background: url('assets/portada_delfi.png') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  box-shadow: var(--shadow);
 }
 
-/* fondo: .portada-media (se asigna background-image desde JS o inline) */
-.portada-media {
+.portada-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 5vh 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.portada-media::before {
+  content: "";
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  transform: scale(1.02);
-  pointer-events: none;
-  z-index: 0;
-  filter: brightness(0.65) saturate(.98);
+  background: rgba(255, 255, 255, 0.15);
+  z-index: 1;
 }
 
-/* colocamos el contenido en la parte superior de la viewport */
+/* ---- Texto superior ---- */
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  color: #fff;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  margin: 0;
+}
+
+.hero-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 6vw, 5rem);
+  color: #fff;
+  text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ---- Imagen central ---- */
+.delfi-wrap {
+  width: clamp(180px, 35vw, 260px);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 1.5rem auto;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.4s ease;
+}
+
+.delfi-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delfi-wrap:hover {
+  transform: scale(1.05);
+}
+
+/* ---- Texto inferior ---- */
+.portada-message {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  max-width: 600px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+#portadaText {
+  color: #333;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ---- Flecha scroll ---- */
+.scroll-flecha {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  animation: bounce 1.8s infinite;
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+
+  50% {
+    transform: translate(-50%, -8px);
+  }
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-name {
+    font-size: 2.8rem;
+  }
+
+  .delfi-wrap {
+    width: clamp(160px, 45vw, 200px);
+  }
+
+  .portada-message {
+    padding: 0.8rem 1rem;
+  }
+}
+
+
+/* --- PORTADA GENERAL --- */
+#portada {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* --- Fondo --- */
+.portada-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.9);
+  z-index: 1;
+}
+
+/* --- Contenedor interno --- */
 .portada-inner {
   position: relative;
   z-index: 2;
@@ -1254,210 +778,89 @@ button:focus,
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  /* importante: subir el contenido */
-  padding-top: 6vh;
-  /* espacio desde el top, relativo a la pantalla */
-  padding-bottom: 24px;
-  text-align: center;
 }
 
-/* Hero title responsive: se adapta con clamp */
+/* --- Título “Mi primer añito / Delfina” --- */
 .hero-title {
-  font-family: "Playfair Display", serif;
-  color: #fff;
-  margin: 0;
-  line-height: 1.02;
-  font-size: clamp(20px, 5.5vw, 36px);
-  /* escala entre 20px y 36px */
-  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  margin-top: -5vh;
+  font-family: 'Great Vibes', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #ffb8ea;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* nombre más destacado debajo o en la misma línea según diseño */
 .hero-name {
-  display: inline-block;
-  font-size: clamp(28px, 9vw, 48px);
-  /* escala entre 28px y 48px */
-  font-weight: 800;
-  margin-top: 6px;
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: linear-gradient(90deg, rgba(255, 182, 213, 0.06), rgba(216, 192, 238, 0.04));
-  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-  color: #fff;
+  display: block;
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  color: #ffb8ea;
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* foto circular: más responsiva y con ligera transparencia */
+/* --- Imagen circular --- */
 .delfi-wrap {
-  width: clamp(120px, 28vw, 260px);
-  height: clamp(120px, 28vw, 260px);
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 14px auto 6px;
+  margin-top: 10rem;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-.delfi-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+#delfiPhoto {
+  width: min(45vw, 260px);
   border-radius: 50%;
-  border: 6px solid #f7a6c4;
-  box-shadow: 0 30px 90px rgba(193, 124, 160, 0.12);
+  border: 4px solid #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  object-fit: cover;
 }
 
-.delfi-wrap img:hover {
-  transform: translateY(-6px);
+/* --- Texto inferior con fondo translúcido --- */
+.portada-message {
+  margin-top: 2rem;
+  /* 🔽 Bajamos el texto */
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  width: min(85%, 500px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* caja de mensaje (rectángulo) */
-.portada-message .lead {
-  color: #5a3d4a;
-  padding: 12px 16px;
-  border-radius: 12px;
-  box-shadow: 0 10px 36px rgba(193, 124, 160, 0.06);
-  backdrop-filter: blur(6px);
-  max-width: 720px;
-  margin: 8px auto 0;
-  font-size: clamp(13px, 2.2vw, 16px);
-  line-height: 1.25;
+#portadaText {
+  color: #444;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
 }
 
-/* ajustamos la flechita para móvil si teniendo fixed la tapa */
+/* --- Flecha inferior --- */
 .scroll-flecha {
-  z-index: 14150;
-  pointer-events: auto;
-  padding: 6px;
-  touch-action: manipulation;
+  position: absolute;
+  bottom: 3%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
-/* --- Media queries finos --- */
-@media (max-width: 900px) {
-  .portada-inner {
-    padding-top: 4vh;
-  }
-
-  /* menos espacio en tablets */
-}
-
-@media (max-width: 420px) {
-
-  /* en celulares subimos todavía más el contenido (pegado al top) */
-  .portada-inner {
-    padding-top: 2.6vh;
-    align-items: center;
-  }
-
+/* --- Ajuste responsive --- */
+@media (max-width: 768px) {
   .hero-title {
-    font-size: clamp(18px, 6.2vw, 24px);
+    margin-top: 10px;
+    font-size: 2.2rem;
   }
 
   .hero-name {
-    font-size: clamp(20px, 10.8vw, 32px);
-    padding: 4px 8px;
+    font-size: 3rem;
   }
 
-  .portada-message .lead {
-    padding: 10px 12px;
-    margin-top: 8px;
-    font-size: 14px;
-    max-width: 90%;
+  #delfiPhoto {
+    width: 60vw;
   }
 
-  .scroll-flecha {
-    position: fixed !important;
-    bottom: 14px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+  .portada-message {
+    margin-top: 2.5rem;
+    width: 100%;
   }
 }
 
-/* Asegurar que ningún fixed (audio) tape el título en móviles */
-@media (max-width: 420px) {
-  .audio-toggle {
-    right: 14px;
-    bottom: 84px;
-  }
-
-  /* movemos audio arriba de la flecha */
-}
-
-.portada::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.05) 0%,
-    rgba(0, 0, 0, 0.10) 45%,
-    rgba(0, 0, 0, 0.18) 100%
-  );
-  pointer-events: none;
-}
-
-@media (max-width: 600px) {
-  .portada-inner h1 {
-    position: relative;
-    top: -160px; 
-  }
-  #portadaText {
-    margin-top: 80px; 
-  }
-}
-
-/* --- efecto al pasar o tocar la foto de Delfi con rebote --- */
-.delfi-wrap img {
-  transition: transform 0.5s cubic-bezier(0.25, 1.25, 0.5, 1), box-shadow 0.4s ease;
-  cursor: pointer;
-  will-change: transform;
-}
-
-.delfi-wrap:hover img,
-.delfi-wrap:active img {
-  transform: scale(1.32);
-  box-shadow: 0 10px 22px rgba(255, 182, 193, 0.55);
-}
 
 
 
 
 
-
-
-
-
-.portada-media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.5); /* leve capa blanca traslúcida */
-}
-
-/* Asegura que el texto esté por encima del filtro */
-.portada-inner {
-  position: relative;
-  z-index: 1;
-}
-
-/* Títulos más visibles */
-.hero-title {
-  color: #ffffff;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-  font-weight: 700;
-}
-
-.hero-name {
-  color: #f7a6c4;
-  font-size: 2.8rem;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-/* Texto del párrafo */
-#portadaText {
-  color: #fff;
-  font-weight: 500;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-}

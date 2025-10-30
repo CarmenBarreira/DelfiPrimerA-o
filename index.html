@@ -26,23 +26,23 @@
 
   <div class="site-root">
     <main class="page-main">
-      <!-- AUDIO TOGGLE -->
+
+      <!-- === BLOQUE AUDIO === -->
       <button id="audioToggle" class="audio-toggle" aria-pressed="false" aria-label="Reproducir música">
-        <img id="audioPlay" src="assets/play.png" alt="Play" />
-        <img id="audioPause" src="assets/pausa.png" alt="Pause" class="hidden" />
+        <img id="audioPlay" src="assets/play.webp" alt="Play" />
+        <img id="audioPause" src="assets/pausa.webp" alt="Pause" class="hidden" />
       </button>
-      <input type="range" id="audioVolume" min="0" max="1" step="0.1" value="1" aria-label="Control de volumen"
-        style="display: none;">
-      <audio id="bgAudio" loop preload="auto">
+      <audio id="bgAudio" loop preload="none">
         <source src="assets/musica.mp3" type="audio/mp3">
       </audio>
 
       <canvas id="confettiCanvas"
-        style="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:15000;display:none;"></canvas>
+        style="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:15000;display:none;">
+      </canvas>
 
       <!-- === SECCIÓN 1: PORTADA === -->
       <section id="portada" class="seccion portada" aria-labelledby="mainTitle">
-        <div class="portada-media" aria-hidden="true" style="background-image: url('assets/portada_delfi.png');"></div>
+        <div class="portada-media lazy-bg" data-bg="assets/portada_fondo.webp" aria-hidden="true"></div>
 
         <div class="portada-inner container text-center">
           <h1 id="mainTitle" class="hero-title">
@@ -50,14 +50,14 @@
             <div><span class="hero-name">Delfina</span></div>
           </h1>
 
-         <!-- <div class="delfi-wrap mx-auto" role="img" aria-label="Foto de Delfina">
-            <img id="delfiPhoto" src="assets/portada_delfi.png" alt="Delfina">
-          </div>-->
+          <div class="delfi-wrap mx-auto" role="img" aria-label="Foto de Delfina">
+            <img id="delfiPhoto" src="assets/portada_delfi.webp" alt="Delfina" loading="lazy" />
+          </div>
 
           <div class="portada-message mt-2" aria-hidden="false">
             <p class="lead small" id="portadaText">
-              Hace un año aterrizaba en los brazos de mis papis a cambiarles el mundo para siempre. Los invito a
-              celebrar mi primer añito juntos. Vestimenta casual, solo se adminten sonrisas, besos y alegría. 💖<br>
+              ✨ Hace un año aterrizaba en los brazos de mis papis a cambiarles el mundo para siempre.✨ <br>
+              🎈 Los invito a celebrar mi primer añito juntos 🎈
             </p>
           </div>
         </div>
@@ -74,26 +74,19 @@
       <!-- === SECCIÓN INFO === -->
       <section id="info" class="seccion info">
         <div class="container">
-
-          <div class="party-row mb-3">
-            <div class="party-icon-wrap">
-              <img id="partyIcon" src="assets/icono-fiesta.svg" alt="Fiesta" class="party-icon" />
-            </div>
-
-            <div class="party-text">
-              <h3 class="title-fiesta">FIESTA</h3>
-            </div>
+          <div class="party-row mb-3 text-center">
+            <img id="partyIcon" src="assets/icono-fiesta.svg" alt="Fiesta" width="64" height="64" loading="lazy">
+            <h3 class="title-fiesta mt-2">FIESTA</h3>
           </div>
 
           <div class="row align-items-center mt-4">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-              <h2 class="section-title">¡Te espero para festejar este gran momento de mi vida!</h2>
-              <p id="fiestaText">
+              <h2 class="section-title">Los invito a celebrar mi primer añito juntos</h2>
+              <p id="fiestaText" class="mt-3">
                 📅 Sábado 06 de diciembre — 18:00 a 22:00 hs.<br />
                 📍 Salón Aventurina — Av. Millán 3724
               </p>
-
-              <div class="d-flex justify-content-center mt-2">
+              <div class="d-flex justify-content-center mt-3">
                 <a id="comoLlegar" href="https://maps.app.goo.gl/8hMPPE5CuvhBQKms6" class="btn btn-pink btn-lg btn-cta"
                   target="_blank" rel="noopener noreferrer">CÓMO LLEGAR</a>
               </div>
@@ -129,9 +122,8 @@
           </div>
         </div>
 
-        <!-- Flecha abajo -->
         <a class="scroll-flecha" href="#galeria" aria-label="Ir a galería">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
             <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
               stroke-linejoin="round" />
           </svg>
@@ -139,116 +131,74 @@
       </section>
 
       <!-- === SECCIÓN GALERÍA === -->
-      <section id="galeria" class="seccion galeria" aria-labelledby="galTitle">
-        <div class="container">
-          <h3 id="galTitle" class="section-title text-center mb-2">Galería — <span class="highlight-title">Mi primer
-              añito</span></h3>
-          <p class="text-center text-muted mb-4">Pequeños momentos, grandes recuerdos ♥</p>
-
-          <div class="text-center mb-3">
-            <p class="lead small text-muted">Hace un año llegué a completar la felicidad de mis papis. Aquí algunos
-              recuerdos de mi primer añito.</p>
-          </div>
+      <section id="galeria" class="seccion galeria">
+        <div class="container text-center">
+          <h3 class="section-title mb-2">Galería de la princesa Delfi</h3>
+          <p class="text-muted mb-4">Pequeños momentos, grandes recuerdos ♥</p>
 
           <div id="galleryCarousel" class="carousel slide mb-3" data-ride="carousel" data-interval="4000">
             <div class="carousel-inner" id="carouselInner"></div>
-
             <a class="carousel-control-prev" href="#galleryCarousel" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Anterior</span>
+              <span class="carousel-control-prev-icon"></span>
             </a>
             <a class="carousel-control-next" href="#galleryCarousel" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Siguiente</span>
+              <span class="carousel-control-next-icon"></span>
             </a>
           </div>
 
-          <div class="row justify-content-center" id="galleryThumbs" role="list"></div>
+          <div id="galleryThumbs" class="row justify-content-center" role="list"></div>
         </div>
 
-        <!-- Flechita desde Galería hacia RSVP -->
         <a class="scroll-flecha" href="#rsvp-gracias" aria-label="Ir a confirmar">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
             <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
               stroke-linejoin="round" />
           </svg>
         </a>
       </section>
 
-      <!-- === SECCIÓN: RSVP + GRACIAS === -->
-      <section id="rsvp-gracias" class="seccion rsvp-gracias" aria-labelledby="rsvpTitle">
-        <div class="container">
+      <!-- === SECCIÓN CONFIRMACIÓN === -->
+      <section id="rsvp-gracias" class="seccion rsvp-gracias">
+        <div class="container text-center">
+          <h2 class="section-title">Confirmación de asistencia</h2>
+          <p>Vestimenta casual. Contanos si venís y cuántos adultos o peques. 💕</p>
 
-          <div class="rsvp-header text-center mb-4">
-            <h2 id="rsvpTitle" class="section-title">Confirmación de asistencia</h2>
-            <p class="mb-3">Contanos si venís, cuántos adultos y peques, edades y si hay restricciones alimentarias.</p>
-          </div>
+          <img src="assets/delfi.webp" alt="Jigglypuff Princesa" class="img-jiggly mt-3 mb-4" loading="lazy"
+            width="180">
 
-        </div>
-        <div class="rsvp-inner">
-          <!-- Jigglypuff (imagen centrada) -->
-          <div class="rsvp-jiggly text-center mb-3">
-            <img src="assets/delfi.png" alt="Jigglypuff Princesa" class="img-jiggly" />
-          </div>
+          <button id="openFormBtnMain" class="btn btn-pink btn-lg btn-cta">Confirmar asistencia</button>
 
-          <!-- Botón centrado debajo de la Jigglypuff -->
-          <div class="rsvp-cta text-center mb-4">
-            <button id="openFormBtnMain" class="btn btn-pink btn-lg btn-cta">Confirmar asistencia</button>
-          </div>
-
-
-          <div id="afterRsvpMsg" style="display:none;" class="mt-2">
+          <div id="afterRsvpMsg" class="mt-3" style="display:none;">
             <p class="small text-success">¡Perfecto! Ya anotamos tu confirmación. Nos vemos pronto. 💖</p>
           </div>
-          <!-- FOOTER (ahora dentro de la sección para que se vea sin quedar 'muy abajo') -->
-          <div class="footer-inline mt-5">
-            <div class="container text-center">
-              <p class="mb-1">Hecha con amor por mis papis 💕</p>
-              <small>© 2025 — Mis papis, con todo su amor ✨</small>
-            </div>
-          </div>
 
+          <footer class="footer-inline mt-5">
+            <p>💕 Hecha con amor por mis papis 💕</p>
+            <small>© 2025 ✨</small>
+          </footer>
         </div>
       </section>
-
     </main>
   </div>
 
-  <!-- Modal iframe para Google Form -->
-  <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
-    aria-labelledby="formModalLabel">
+  <!-- === Modal Google Form === -->
+  <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body p-0">
-          <button type="button" class="close p-2" data-dismiss="modal" aria-label="Cerrar"><span
-              aria-hidden="true">&times;</span></button>
+          <button type="button" class="close p-2" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
           <iframe id="formIframe" src="" width="100%" height="640" frameborder="0" title="Formulario RSVP"></iframe>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.umd.js"></script>
-  <script src="app.js"></script>
+  <!-- Scripts optimizados -->
+  <script defer src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.umd.js"></script>
+  <script defer src="app.js"></script>
 
-  <!-- Small fallback script: smooth-scroll para flechitas (corrige problemas en móviles) -->
-  <script>
-    document.querySelectorAll('.scroll-flecha').forEach(a => {
-      a.addEventListener('click', function (e) {
-        e.preventDefault();
-        const href = this.getAttribute('href');
-        if (!href || href === '#') return;
-        const target = document.querySelector(href);
-        if (!target) return;
-        // smooth scroll and small offset (so content isn't hidden)
-        const top = target.getBoundingClientRect().top + window.scrollY - 12;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }, { passive: true });
-    });
-  </script>
 </body>
 
 </html>
