@@ -1,134 +1,100 @@
-/* app.js — configuración y lógica principal (limpio y combinado) */
+/* app.js — configuración y lógica principal */
 
-/* ========== CONFIG (edita solo estas) ========== */
-const EVENT_DATE_ISO = "2025-12-06T18:00:00-03:00"; // hora coherente con banner
+/* ========== CONFIG ========== */
+const EVENT_DATE_ISO = "2025-12-06T18:00:00-03:00"; // hora local (GMT-3)
 const KID_NAME = "Delfina";
 
-/* assets */
-const PORTADA_IMAGE = "assets/portada_delfi.png"; // imagen de portada circular y fondo
-const HERO_PHOTO = "assets/delfi.png";
+/* assets (unificados a lo que usás en HTML) */
+const PORTADA_BG = "assets/portada_delfi.webp";     // fondo portada
+const HERO_PHOTO = "assets/portada_delfi.webp";     // foto circular
 const PARTY_ICON = "assets/icono-fiesta.svg";
 const AUDIO_SRC = "assets/musica.mp3";
 
 /* Google Form (embed) */
 const GOOGLE_FORM_EMBED_URL = "https://forms.gle/2PJjdBRAdbj6QGfX7?embedded=true";
-
-
-/* Lugar / mapa */
-const EVENT_LOCATION_NAME = "Salón Aventurina";
-const EVENT_ADDRESS = "Av. Millán 3724";
-const EVENT_MAP_URL = "https://maps.app.goo.gl/8hMPPE5CuvhBQKms6";
-const EVENT_TIMEZONE = "America/Montevideo";
 /* ========== FIN CONFIG ========== */
 
-let confettiEngine = null;
+/* Scroll suave en flechas (único listener) */
 document.querySelectorAll('.scroll-flecha').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
     const target = document.querySelector(a.getAttribute('href'));
-    if (target) {
-      // Ajusta el desplazamiento si es necesario
-      window.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
-    }
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
-document.querySelectorAll('.scroll-flecha').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) window.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
-  });
-});
+let confettiEngine = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-
+  // fondo lazy
   document.querySelectorAll('.lazy-bg').forEach(el => {
     const bg = el.dataset.bg;
     if (bg) el.style.backgroundImage = `url(${bg})`;
   });
 
-
+  // portada
   const portadaMedia = document.querySelector('.portada-media');
-  if (portadaMedia) portadaMedia.style.backgroundImage = `url('${PORTADA_IMAGE}')`;
-  const delfi = document.getElementById('delfiPhoto'); if (delfi) delfi.src = PORTADA_IMAGE;
-  const partyIcon = document.getElementById('partyIcon'); if (partyIcon) partyIcon.src = PARTY_ICON;
-  const kidNameEl = document.getElementById('kidName'); if (kidNameEl) kidNameEl.textContent = KID_NAME;
+  if (portadaMedia && PORTADA_BG) portadaMedia.style.backgroundImage = `url('${PORTADA_BG}')`;
 
-  // animate portada title
+  const delfi = document.getElementById('delfiPhoto');
+  if (delfi && HERO_PHOTO) delfi.src = HERO_PHOTO;
+
+  const partyIcon = document.getElementById('partyIcon');
+  if (partyIcon) partyIcon.src = PARTY_ICON;
+
+  // animación sutil portada
   const portadaInner = document.querySelector('.portada-inner');
   if (portadaInner) setTimeout(() => portadaInner.classList.add('visible'), 280);
 
-  // banner date — usar locale es-UY + timezone
-  const bannerDate = document.getElementById('bannerDate');
-  if (bannerDate) {
-    const evt = new Date(EVENT_DATE_ISO);
-    const dayStr = evt.toLocaleDateString('es-UY', { day: '2-digit', month: 'long', timeZone: EVENT_TIMEZONE });
-    const timeStr = evt.toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit', timeZone: EVENT_TIMEZONE });
-    bannerDate.querySelector('.date-left').textContent = dayStr;
-    bannerDate.querySelector('.date-right').innerHTML = `<span class="time">${timeStr}</span> — <span class="place">${EVENT_LOCATION_NAME}</span>`;
-  }
+  // link mapa (si querés cambiar el href, hacelo acá)
+  const comoLlegar = document.getElementById('comoLlegar');
+  if (comoLlegar) comoLlegar.href = "https://maps.app.goo.gl/8hMPPE5CuvhBQKms6";
 
-  // map link
-  const comoLlegar = document.getElementById('comoLlegar'); if (comoLlegar) comoLlegar.href = EVENT_MAP_URL;
-
-  // gallery images + captions (array de objetos)
+  // Galería (se abre con Fancybox)
   const galleryImgs = [
     { src: 'assets/1.jpeg', caption: 'En la panza de mi mami' },
-    { src: 'assets/2.png', caption: 'Princesa' },
+    { src: 'assets/2.png',  caption: 'Princesa' },
     { src: 'assets/3.jpeg', caption: 'Explorando el mundo' },
     { src: 'assets/4.jpeg', caption: 'Abrazos de la familia' },
-    { src: 'assets/5.jpeg', caption: 'Mi momento favorito del dia' },
+    { src: 'assets/5.jpeg', caption: 'Mi momento favorito del día' },
     { src: 'assets/6.jpeg', caption: 'Pequeños pasos' },
     { src: 'assets/7.jpeg', caption: 'Besos y juegos' },
     { src: 'assets/8.jpeg', caption: 'Nuestra princesita' }
   ];
   loadGallery(galleryImgs);
 
-  // countdown
+  // countdown (fix TDZ)
   startCountdown(EVENT_DATE_ISO);
 
-  // audio toggle + autoplay attempt
+  // Audio
   setupAudioToggle();
 
-  // smooth scroll chevrons
-  document.querySelectorAll('.scroll-flecha').forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      const target = document.querySelector(a.getAttribute('href'));
-      if (!target) return;
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  // init RSVP + helpers
+  // RSVP + helpers
   initRsvp();
 
   // confetti engine
   confettiEngine = createConfettiEngine('confettiCanvas');
 
-  // show small message when the form modal closes (UX)
+  // mostrar mensajito cuando se cierra el modal (y tirar confeti)
   try {
     $('#formModal').on('hidden.bs.modal', function () {
       if (confettiEngine) confettiEngine.fire(70);
       const after = document.getElementById('afterRsvpMsg');
       if (after) { after.style.display = 'block'; setTimeout(() => after.style.display = 'none', 4200); }
     });
-  } catch (e) { /* ignore if bootstrap not present */ }
+  } catch (e) { /* bootstrap ausente */ }
 
-  // accessibility: ArrowDown navigates to next section
+  // Accesibilidad: ArrowDown navega a la siguiente sección
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown') {
       const sections = Array.from(document.querySelectorAll('.seccion'));
-      const top = window.scrollY;
-      const currentIndex = sections.findIndex(s => s.offsetTop > top + 10);
-      const next = sections[Math.max(0, currentIndex)];
+      const next = sections.find(s => s.offsetTop > window.scrollY + 10);
       if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 });
 
-/* ===== load gallery (carousel + thumbs) ===== */
+/* ===== load gallery ===== */
 function loadGallery(items) {
   const carouselInner = document.getElementById('carouselInner');
   const galleryThumbs = document.getElementById('galleryThumbs');
@@ -138,9 +104,8 @@ function loadGallery(items) {
   galleryThumbs.innerHTML = '';
 
   items.forEach((it, i) => {
-    const active = i === 0 ? ' active' : '';
     const slide = document.createElement('div');
-    slide.className = `carousel-item${active}`;
+    slide.className = `carousel-item${i === 0 ? ' active' : ''}`;
     slide.innerHTML = `
       <a data-fancybox="gallery" href="${it.src}">
         <img src="${it.src}" class="d-block w-100" alt="Foto ${i + 1}">
@@ -155,16 +120,17 @@ function loadGallery(items) {
     galleryThumbs.appendChild(col);
   });
 
-  try { $('#galleryCarousel').carousel(); } catch (e) { }
+  try { $('#galleryCarousel').carousel(); } catch (e) {}
 }
 
-/* ===== Countdown ===== */
+/* ===== Countdown (fix TDZ) ===== */
 function startCountdown(isoDate) {
   const target = new Date(isoDate).getTime();
   if (isNaN(target)) return;
   const liveRegion = document.getElementById('countdown');
   if (liveRegion) liveRegion.setAttribute('aria-live', 'polite');
 
+  let iv; // declarado antes para evitar TDZ
   const tick = () => {
     const now = Date.now();
     const diff = Math.max(0, target - now);
@@ -173,9 +139,10 @@ function startCountdown(isoDate) {
     const hours = Math.floor((s % (3600 * 24)) / 3600);
     const minutes = Math.floor((s % 3600) / 60);
     const seconds = s % 60;
-    const d = document.getElementById('cd-days'); if (d) d.textContent = days;
+
+    const d = document.getElementById('cd-days');  if (d) d.textContent = days;
     const h = document.getElementById('cd-hours'); if (h) h.textContent = String(hours).padStart(2, '0');
-    const m = document.getElementById('cd-mins'); if (m) m.textContent = String(minutes).padStart(2, '0');
+    const m = document.getElementById('cd-mins');  if (m) m.textContent = String(minutes).padStart(2, '0');
     const sec = document.getElementById('cd-secs'); if (sec) sec.textContent = String(seconds).padStart(2, '0');
 
     if (diff <= 0) {
@@ -185,36 +152,35 @@ function startCountdown(isoDate) {
     }
   };
   tick();
-  const iv = setInterval(tick, 1000);
+  iv = setInterval(tick, 1000);
 }
 
-/* ===== Audio control (MP3 autoplay attempt, toggle) ===== */
+/* ===== Audio control ===== */
 function setupAudioToggle() {
   const audio = document.getElementById('bgAudio');
   const toggle = document.getElementById('audioToggle');
-  const volumeControl = document.getElementById('audioVolume');
+  const volumeControl = document.getElementById('audioVolume'); // opcional
 
-  if (audio && AUDIO_SRC && AUDIO_SRC.length > 3) audio.src = AUDIO_SRC;
-  if (!toggle || !audio) return console.warn('Audio elements no encontrados');
+  if (!toggle || !audio) return;
+  if (AUDIO_SRC) audio.src = AUDIO_SRC;
 
-  // try autoplay once (user may block it)
+  // intento de autoplay (puede ser bloqueado)
   audio.play().then(() => { syncAudioIcons(true); }).catch(() => { syncAudioIcons(false); });
 
-  toggle.style.zIndex = 14000;
   toggle.addEventListener('click', () => {
     if (audio.paused) {
-      audio.play().catch(err => console.warn('Autoplay blocked', err));
-      syncAudioIcons(true);
+      audio.play().catch(err => console.warn('Autoplay bloqueado', err));
     } else {
       audio.pause();
-      syncAudioIcons(false);
     }
   });
 
-  // Control de volumen
-  volumeControl.addEventListener('input', () => { audio.volume = volumeControl.value; });
+  if (volumeControl) {
+    audio.volume = volumeControl.value ?? 1;
+    volumeControl.addEventListener('input', () => { audio.volume = volumeControl.value; });
+  }
 
-  audio.addEventListener('play', () => syncAudioIcons(true));
+  audio.addEventListener('play',  () => syncAudioIcons(true));
   audio.addEventListener('pause', () => syncAudioIcons(false));
   audio.addEventListener('ended', () => syncAudioIcons(false));
 }
@@ -222,9 +188,16 @@ function syncAudioIcons(isPlaying) {
   const playI = document.getElementById('audioPlay');
   const pauseI = document.getElementById('audioPause');
   const toggle = document.getElementById('audioToggle');
-  if (!playI || !pauseI) return;
-  if (isPlaying) { playI.classList.add('hidden'); pauseI.classList.remove('hidden'); toggle.setAttribute('aria-pressed', 'true'); }
-  else { playI.classList.remove('hidden'); pauseI.classList.add('hidden'); toggle.setAttribute('aria-pressed', 'false'); }
+  if (!playI || !pauseI || !toggle) return;
+  if (isPlaying) {
+    playI.classList.add('hidden');
+    pauseI.classList.remove('hidden');
+    toggle.setAttribute('aria-pressed', 'true');
+  } else {
+    playI.classList.remove('hidden');
+    pauseI.classList.add('hidden');
+    toggle.setAttribute('aria-pressed', 'false');
+  }
 }
 
 /* ===== RSVP helpers ===== */
@@ -232,34 +205,7 @@ function initRsvp() {
   const openMain = document.getElementById('openFormBtnMain');
   if (openMain) openMain.addEventListener('click', () => openFormModal(GOOGLE_FORM_EMBED_URL));
 
-  document.querySelectorAll('.chip').forEach(ch => { ch.addEventListener('click', () => { document.querySelectorAll('.chip').forEach(c => c.classList.remove('active')); ch.classList.add('active'); }); });
-
-  const miniSubmit = document.getElementById('miniSubmit');
-  const miniClear = document.getElementById('miniClear');
-  if (miniSubmit) {
-    miniSubmit.addEventListener('click', () => {
-      const name = document.getElementById('miniName').value || '---';
-      const adults = document.getElementById('miniAdults').value || '0';
-      const kids = document.getElementById('miniKids').value || '0';
-      const chip = document.querySelector('.chip.active');
-      const restr = chip ? chip.dataset.val : 'Ninguna';
-      const body = encodeURIComponent(`Hola,%0A%0AConfirmo mi asistencia al cumple de ${KID_NAME}.%0A%0ANombre: ${name}%0AAdultos: ${adults}%0APeques: ${kids}%0ARestricciones: ${restr}%0A%0AMuchas gracias!`);
-      window.location.href = `mailto:${OWNER_EMAIL}?subject=RSVP%20-%20${encodeURIComponent(KID_NAME)}&body=${body}`;
-      document.getElementById('miniFeedback').style.display = 'block';
-      if (confettiEngine) confettiEngine.fire(60);
-    });
-  }
-  if (miniClear) {
-    miniClear.addEventListener('click', () => {
-      document.getElementById('miniName').value = '';
-      document.getElementById('miniAdults').value = '';
-      document.getElementById('miniKids').value = '';
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      document.getElementById('miniFeedback').style.display = 'none';
-    });
-  }
-
-  // share + copy
+  // share + copy (si más adelante agregás botones con estos IDs)
   const shareWhats = document.getElementById('shareWhats');
   const copyLinkBtn = document.getElementById('copyLinkBtn');
   if (shareWhats) {
@@ -268,8 +214,11 @@ function initRsvp() {
   }
   if (copyLinkBtn) {
     copyLinkBtn.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(location.href); const notice = document.getElementById('copyNotice'); if (notice) { notice.style.display = 'block'; setTimeout(() => notice.style.display = 'none', 2600); } }
-      catch (e) { alert('No se pudo copiar el enlace: ' + e); }
+      try {
+        await navigator.clipboard.writeText(location.href);
+        const notice = document.getElementById('copyNotice');
+        if (notice) { notice.style.display = 'block'; setTimeout(() => notice.style.display = 'none', 2600); }
+      } catch (e) { alert('No se pudo copiar el enlace: ' + e); }
     });
   }
 
@@ -283,7 +232,7 @@ function initRsvp() {
   }
 }
 
-/* ===== modal form or mailto fallback ===== */
+/* ===== Modal de Form ===== */
 function openFormModal(url) {
   const iframe = document.getElementById('formIframe');
   if (iframe) iframe.src = url;
@@ -291,7 +240,7 @@ function openFormModal(url) {
   catch (e) { window.open(url, '_blank'); }
 }
 
-/* ===== Confetti engine (simple, no dependencias) ===== */
+/* ===== Confetti engine ===== */
 function createConfettiEngine(canvasId) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return null;
@@ -316,10 +265,10 @@ function createConfettiEngine(canvasId) {
   let raf = 0;
   function frame() {
     ctx.clearRect(0, 0, w, h);
-    particles.forEach((p, i) => {
+    particles.forEach((p) => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.06; // gravity
+      p.vy += 0.06; // gravedad
       p.rot += p.vrot;
       ctx.save();
       ctx.translate(p.x, p.y);
@@ -333,6 +282,12 @@ function createConfettiEngine(canvasId) {
     else { cancelAnimationFrame(raf); canvas.style.display = 'none'; }
   }
 
-  return { fire(count = 80) { for (let i = 0; i < count; i++) particles.push(newParticle()); canvas.style.display = 'block'; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); } };
+  return {
+    fire(count = 80) {
+      for (let i = 0; i < count; i++) particles.push(newParticle());
+      canvas.style.display = 'block';
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(frame);
+    }
+  };
 }
-

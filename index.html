@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="es">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,8 +7,9 @@
   <meta name="description" content="Invitación digital - Cumple 1 año Delfina - Tema Jigglypuff Princesa">
 
   <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@600..700&family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;600;700&display=swap"
     rel="stylesheet">
 
   <!-- Bootstrap -->
@@ -23,7 +23,6 @@
 </head>
 
 <body>
-
   <div class="site-root">
     <main class="page-main">
 
@@ -42,7 +41,7 @@
 
       <!-- === SECCIÓN 1: PORTADA === -->
       <section id="portada" class="seccion portada" aria-labelledby="mainTitle">
-        <div class="portada-media lazy-bg" data-bg="assets/portada_fondo.webp" aria-hidden="true"></div>
+        <div class="portada-media lazy-bg" data-bg="assets/portada_delfi.webp" aria-hidden="true"></div>
 
         <div class="portada-inner container text-center">
           <h1 id="mainTitle" class="hero-title">
@@ -56,20 +55,19 @@
 
           <div class="portada-message mt-2" aria-hidden="false">
             <p class="lead small" id="portadaText">
-              ✨ Hace un año aterrizaba en los brazos de mis papis a cambiarles el mundo para siempre.✨ <br>
+              ✨ Hace un año aterrizaba en los brazos de mis papis a cambiarles el mundo para siempre. ✨<br>
               🎈 Los invito a celebrar mi primer añito juntos 🎈
             </p>
           </div>
+
           <a class="scroll-flecha" href="#info" aria-label="Ir a información">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <polyline points="6 9 12 15 18 9" stroke="#f7a6c4" stroke-width="2.6" stroke-linecap="round"
                 stroke-linejoin="round" />
-            </svg></a>
-
-
+            </svg>
+          </a>
         </div>
       </section>
-
 
       <!-- === SECCIÓN INFO === -->
       <section id="info" class="seccion info">
@@ -86,17 +84,24 @@
                 📅 Sábado 06 de diciembre — 18:00 a 22:00 hs.<br />
                 📍 Salón Aventurina — Av. Millán 3724
               </p>
-              <div class="d-flex justify-content-center mt-3">
+
+              <div class="d-flex justify-content-center mt-3 flex-wrap gap-2">
                 <a id="comoLlegar" href="https://maps.app.goo.gl/8hMPPE5CuvhBQKms6" class="btn btn-pink btn-lg btn-cta"
                   target="_blank" rel="noopener noreferrer">CÓMO LLEGAR</a>
+
+                <!-- Agregar a Google Calendar -->
+                <a class="btn btn-outline-secondary btn-sm ml-2"
+                   target="_blank" rel="noopener noreferrer"
+                   href="https://www.google.com/calendar/render?action=TEMPLATE&text=Cumple%20de%20Delfina&dates=20251206T210000Z/20251207T010000Z&details=Primer%20a%C3%B1ito%20de%20Delfi%20%E2%9C%A8&location=Sal%C3%B3n%20Aventurina%2C%20Av.%20Mill%C3%A1n%203724&sf=true&output=xml">
+                  Agregar a Google Calendar
+                </a>
               </div>
             </div>
 
             <div class="col-md-6">
               <div class="countdown-card p-3">
                 <p class="lead text-center mb-2">Cada vez falta menos... </p>
-                <div id="countdown" class="d-flex justify-content-center align-items-center flex-wrap"
-                  aria-live="polite">
+                <div id="countdown" class="d-flex justify-content-center align-items-center flex-wrap" aria-live="polite">
                   <div class="cd-unit outlined">
                     <div id="cd-days" class="num">--</div>
                     <div class="lbl">DÍAS</div>
@@ -119,8 +124,8 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </div> <!-- /row -->
+        </div> <!-- /container -->
 
         <a class="scroll-flecha" href="#galeria" aria-label="Ir a galería">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
@@ -138,21 +143,8 @@
 
           <div id="galleryCarousel" class="carousel slide mb-3" data-ride="carousel" data-interval="4000">
             <div class="carousel-inner" id="carouselInner">
-              <div class="carousel-item active">
-                <!--<img src="assets/foto1.webp" class="d-block w-100" alt="Delfi sonriendo">
-                <div class="carousel-caption d-none d-md-block">
-                  <p>Delfi disfrutando su día especial 💕</p>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="assets/foto2.webp" class="d-block w-100" alt="Familia reunida">
-                <div class="carousel-caption d-none d-md-block">
-                  <p>Un momento lleno de amor 🥰</p>
-                </div>
-              </div>-->
-              <!-- Podés seguir agregando más fotos así -->
+              <!-- Las slides se inyectan por JS -->
             </div>
-
             <a class="carousel-control-prev" href="#galleryCarousel" role="button" data-slide="prev">
               <span class="carousel-control-prev-icon"></span>
             </a>
@@ -160,7 +152,6 @@
               <span class="carousel-control-next-icon"></span>
             </a>
           </div>
-
 
           <div id="galleryThumbs" class="row justify-content-center" role="list"></div>
         </div>
@@ -179,8 +170,7 @@
           <h2 class="section-title">Confirmación de asistencia</h2>
           <p>Vestimenta casual. Contanos si venís y cuántos adultos o peques. 💕</p>
 
-          <img src="assets/delfi.webp" alt="Jigglypuff Princesa" class="img-jiggly mt-3 mb-4" loading="lazy"
-            width="180">
+          <img src="assets/delfi.webp" alt="Jigglypuff Princesa" class="img-jiggly mt-3 mb-4" loading="lazy" width="180">
 
           <button id="openFormBtnMain" class="btn btn-pink btn-lg btn-cta">Confirmar asistencia</button>
 
@@ -209,12 +199,10 @@
     </div>
   </div>
 
-  <!-- Scripts optimizados -->
+  <!-- Scripts -->
   <script defer src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!--<script defer src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.umd.js"></script>-->
+  <script defer src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox.umd.js"></script>
   <script defer src="app.js"></script>
-
 </body>
-
 </html>
