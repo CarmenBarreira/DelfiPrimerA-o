@@ -12,7 +12,7 @@ const AUDIO_SRC = "assets/musica.mp3";
 
 /* Google Form (embed) */
 const GOOGLE_FORM_EMBED_URL = "https://forms.gle/2PJjdBRAdbj6QGfX7?embedded=true";
-const OWNER_EMAIL = "csilbarreira@gmail.com";
+
 
 /* Lugar / mapa */
 const EVENT_LOCATION_NAME = "Salón Aventurina";
@@ -22,6 +22,16 @@ const EVENT_TIMEZONE = "America/Montevideo";
 /* ========== FIN CONFIG ========== */
 
 let confettiEngine = null;
+document.querySelectorAll('.scroll-flecha').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      // Ajusta el desplazamiento si es necesario
+      window.scrollTo({ top: target.offsetTop - 12, behavior: 'smooth' });
+    }
+  });
+});
 
 document.querySelectorAll('.scroll-flecha').forEach(a => {
   a.addEventListener('click', e => {
@@ -64,11 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // gallery images + captions (array de objetos)
   const galleryImgs = [
-    { src: 'assets/1.jpg', caption: 'Primeros sonrisas' },
-    { src: 'assets/2.png', caption: 'Cakesmash y risas' },
-    { src: 'assets/3.png', caption: 'Mimos infinitos' },
-    { src: 'assets/4.png', caption: 'Abrazos de la familia' },
-    { src: 'assets/5.jpeg', caption: 'Descubrimientos' },
+    { src: 'assets/1.jpeg', caption: 'En la panza de mi mami' },
+    { src: 'assets/2.png', caption: 'Princesa' },
+    { src: 'assets/3.jpeg', caption: 'Explorando el mundo' },
+    { src: 'assets/4.jpeg', caption: 'Abrazos de la familia' },
+    { src: 'assets/5.jpeg', caption: 'Mi momento favorito del dia' },
     { src: 'assets/6.jpeg', caption: 'Pequeños pasos' },
     { src: 'assets/7.jpeg', caption: 'Besos y juegos' },
     { src: 'assets/8.jpeg', caption: 'Nuestra princesita' }

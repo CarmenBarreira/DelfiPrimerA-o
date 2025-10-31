@@ -50,7 +50,6 @@ body {
 
 .seccion {
   min-height: 100vh;
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -176,35 +175,17 @@ body {
   .delfi-wrap {
     width: clamp(160px, 45vw, 220px);
   }
-
-  .portada-message {
-    margin-top: 2.5rem;
-    padding: 1rem;
-  }
 }
 
 
 .portada::before {
   content: "";
-  position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.08) 45%, rgba(0, 0, 0, 0.14) 100%);
   pointer-events: none;
 }
 
-.portada-inner {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 6vh;
-  padding-bottom: 24px;
-  text-align: center;
-}
 
 .hero-title {
   margin: 0;
@@ -305,7 +286,6 @@ body {
 
 #countdown {
   display: flex;
-  gap: 12px;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap
@@ -372,8 +352,8 @@ body {
 
 #galleryThumbs .thumb {
   flex: 0 0 auto;
-  width: 110px;
-  height: 70px
+  width: 95px;
+  height: 60px
 }
 
 #galleryThumbs .thumb img {
@@ -542,7 +522,6 @@ button:focus,
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 10px
   }
 
   .party-row .party-icon-wrap {
@@ -608,10 +587,8 @@ button:focus,
   }
 
   .portada-message .lead {
-    /* padding: 10px 12px;*/
-    margin-top: 8px;
-    font-size: 14px;
-    max-width: 90%
+    margin-top: 3px;
+    font-size: 12px;
   }
 
   .audio-toggle {
@@ -629,19 +606,6 @@ button:focus,
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-.portada-inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  padding: 5vh 1rem;
-  text-align: center;
-  position: relative;
-  z-index: 2;
 }
 
 .portada-media::before {
@@ -740,21 +704,17 @@ button:focus,
     width: clamp(160px, 45vw, 200px);
   }
 
-  .portada-message {
-    padding: 0.8rem 1rem;
-  }
 }
 
 
 /* --- PORTADA GENERAL --- */
 #portada {
   position: relative;
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  overflow: hidden;
+
 }
 
 /* --- Fondo --- */
@@ -793,7 +753,7 @@ button:focus,
   display: block;
   font-family: 'Great Vibes', cursive;
   font-size: clamp(2.8rem, 6vw, 4.5rem);
-  color: #ffb8ea;
+  color: #ff68d2;
   text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -809,16 +769,12 @@ button:focus,
   border-radius: 50%;
   border: 4px solid #fff;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-  object-fit: cover;
 }
 
 /* --- Texto inferior con fondo translúcido --- */
 .portada-message {
-  margin-top: 2rem;
-  /* 🔽 Bajamos el texto */
   background: rgba(255, 255, 255, 0.6);
   border-radius: 1rem;
-  padding: 1rem 1.5rem;
   width: min(85%, 500px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -883,5 +839,18 @@ button:focus,
   color: var(--accent1);
   margin-bottom: 6px;
   font-weight: 800;
+}
+
+
+
+
+
+.title-fiesta {
+  color: var(--accent1);
+  font-family: 'Playfair Display', serif;
+}
+.section-title {
+  font-family: "Playfair Display", serif;
+
 }
 
